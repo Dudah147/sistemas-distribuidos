@@ -27,12 +27,52 @@ public class ClientApp {
             
             System.out.println("Conectado ao servidor. Digite " + '"' + "exit" + '"' + " para sair!");
             
+            // Testando cadastrarUsuario
+            // EMAIL INVALIDO
             JSONObject json = new JSONObject();
             json.put("operacao", "cadastrarCandidato");
-            json.put("nome", "TOmandoErro");
-            json.put("email", "tomandoerro@gmail.com");
+            json.put("nome", "Usuario");
+            json.put("email", "emailerrado");
             json.put("senha", 1234);
-
+            
+            out.println(json.toString());
+            System.out.println("Resposta do servidor: " + in.readLine());
+            
+            // SENHA INVALIDA
+            json = new JSONObject();
+            json.put("operacao", "cadastrarCandidato");
+            json.put("nome", "Usuario");
+            json.put("email", "pedro@gmail.com");
+            json.put("senha", "1234");
+            
+            out.println(json.toString());
+            System.out.println("Resposta do servidor: " + in.readLine());
+            
+            // CADASTRO REALIZADO COM SUCESSO
+            json = new JSONObject();
+            json.put("operacao", "cadastrarCandidato");
+            json.put("nome", "Usuario");
+            json.put("email", "pedro@gmail.com");
+            json.put("senha", 1234);
+            
+            out.println(json.toString());
+            System.out.println("Resposta do servidor: " + in.readLine());
+            
+            // EMAIL JÁ CADASTRADO
+            json = new JSONObject();
+            json.put("operacao", "cadastrarCandidato");
+            json.put("nome", "Usuario");
+            json.put("email", "pedro@gmail.com");
+            json.put("senha", 1234);
+            
+            out.println(json.toString());
+            System.out.println("Resposta do servidor: " + in.readLine());
+            
+            
+            // Testando Visualizar Candidato
+            json = new JSONObject();
+            json.put("operacao", "visualizarCandidato");
+            json.put("email", "pedro@gmail.com");
             
             out.println(json.toString());
             System.out.println("Resposta do servidor: " + in.readLine());
