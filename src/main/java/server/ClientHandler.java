@@ -4,6 +4,7 @@
  */
 package server;
 
+import jakarta.persistence.EntityManager;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,9 +16,11 @@ import java.net.Socket;
 public class ClientHandler extends Thread {
 
     private Socket clientSocket;
+    private EntityManager em;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, EntityManager em) {
         this.clientSocket = socket;
+        this.em = em;
     }
 
     @Override
@@ -28,12 +31,13 @@ public class ClientHandler extends Thread {
 
             String line;
             while ((line = in.readLine()) != null) {
-                System.out.println("Recebido do cliente: " + line);
                 if ("exit".equalsIgnoreCase(line)) {
+                    System.out.println("Conexão encerrada.");
                     out.println("Conexão encerrada.");
                     break;
                 }
-                String response = Routes.handleRequest(line);
+                System.out.println("Recebido do cliente: " + line);
+                String response = new Routes(line, em).handleRequest();
                 out.println(response);
             }
         } catch (IOException e) {

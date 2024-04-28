@@ -23,19 +23,25 @@ public class ClientApp {
             Socket socket = new Socket("localhost", 22222);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             
-            System.out.println("Conectado ao servidor");
+            System.out.println("Conectado ao servidor. Digite " + '"' + "exit" + '"' + " para sair!");
             
             JSONObject json = new JSONObject();
             json.put("operacao", "cadastrarCandidato");
-            json.put("nome", "Pedro");
-            json.put("email", "pedro@gmail.com");
+            json.put("nome", "TOmandoErro");
+            json.put("email", "tomandoerro@gmail.com");
             json.put("senha", 1234);
 
             
             out.println(json.toString());
             System.out.println("Resposta do servidor: " + in.readLine());
+            
+            while (scanner.nextLine().equals("exit")) {
+                out.println("exit");
+                System.out.println("Deconectando...");
+                break;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

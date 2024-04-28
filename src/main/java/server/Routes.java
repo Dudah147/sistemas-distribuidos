@@ -4,6 +4,9 @@
  */
 package server;
 
+import controller.CandidatoController;
+import controller.LoginController;
+import jakarta.persistence.EntityManager;
 import org.json.JSONObject;
 
 /**
@@ -11,11 +14,29 @@ import org.json.JSONObject;
  * @author dudam
  */
 public class Routes {
-    public static String handleRequest(String request){
-        JSONObject jsonRequest = new JSONObject(request);
-        return switch (jsonRequest.getString("operacao")) {
-            case "cadastrarCandidato" -> "CREATE CANDIDATO";
-            case "atualizarCandidato" -> "UPDATE CANDIDATO";
+    private JSONObject request;
+    
+    private CandidatoController candidatoController;
+    private LoginController loginController;
+    
+    public Routes(String request, EntityManager em){
+        this.request = new JSONObject(request);
+        this.candidatoController = new CandidatoController(em, this.request);
+        this.loginController = new LoginController(em, this.request);
+    }
+    
+    public String handleRequest(){
+        return switch (request.getString("operacao")) {
+            // --> Rotas CANDIDATO
+            case "cadastrarCandidato" -> this.candidatoController.cadastrarCandidato();
+            case "visualizarCandidato" -> this.candidatoController.visualizarCandidato();
+            case "atualizarCandidato" -> this.candidatoController.atualizarCandidato();
+            case "apagarCandidato" -> this.candidatoController.apagarCandidato();
+                
+            // --> Rotas para LOGIN
+            case "loginCandidato" -> this.loginController.loginCandidato();
+            case "logout" -> this.loginController.logout();
+                
             default -> "ROTA NÃO ENCONTRADA";
         };
     }
