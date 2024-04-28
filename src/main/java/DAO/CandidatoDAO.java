@@ -60,7 +60,6 @@ public class CandidatoDAO {
             Candidato candidato = this.findCandidatoByEmail(email);
 
             if (candidato != null) {
-                candidato.setEmail(email);
                 candidato.setSenha(newPassword);
                 candidato.setNome(newUsername);
                 entityManager.merge(candidato);
