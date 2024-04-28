@@ -6,6 +6,7 @@ package DAO;
 
 import entities.Candidato;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
@@ -35,14 +36,73 @@ public class CandidatoDAO {
     }
 
     public void createCandidato(Candidato candidato) {
-        try{
-            
-            entityManager.getTransaction().begin();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
             entityManager.persist(candidato);
             entityManager.getTransaction().commit();
-        } catch (Exception ex){
-            System.out.println("ERRO AO TENTAR CADASTRAR USUARIO: " + ex.getMessage());
-            throw ex;
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
         }
     }
+
+    public boolean updateCandidato(String email, int newPassword, String newUsername) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+        } catch (Exception e) {
+            System.out.println("CONEXÃO JÁ ESTABELECIDA");
+        }
+        try {
+            Candidato candidato = this.findCandidatoByEmail(email);
+
+            if (candidato != null) {
+                candidato.setEmail(email);
+                candidato.setSenha(newPassword);
+                candidato.setNome(newUsername);
+                entityManager.merge(candidato);
+                transaction.commit();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteCandidatoByEmail(String email) {
+        EntityTransaction transaction;
+        transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+        } catch (Exception e) {
+            System.out.println("CONEXÃO JÁ ESTABELECIDA");
+        }
+        try {
+
+            Candidato candidato = this.findCandidatoByEmail(email);
+            if (candidato != null) {
+                entityManager.remove(candidato);
+                transaction.commit();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

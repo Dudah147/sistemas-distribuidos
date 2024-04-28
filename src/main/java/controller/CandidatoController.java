@@ -19,10 +19,12 @@ public class CandidatoController {
 
     private EntityManager em;
     private JSONObject request;
+    private CandidatoDAO candidatoDAO;
 
     public CandidatoController(EntityManager em, JSONObject request) {
         this.em = em;
         this.request = request;
+        this.candidatoDAO = new CandidatoDAO(em);
     }
 
     public String cadastrarCandidato() {
@@ -40,23 +42,22 @@ public class CandidatoController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request)).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(this.request, "cadastrarCandidato")).equals("OK")) {
             return response;
         }
 
         // Valida nome
-        if (!(response = FormValidator.checkNome(this.request)).equals("OK")) {
+        if (!(response = FormValidator.checkNome(this.request, "cadastrarCandidato")).equals("OK")) {
             return response;
         }
 
         // Valida senha
-        if (!(response = FormValidator.checkSenha(this.request)).equals("OK")) {
+        if (!(response = FormValidator.checkSenha(this.request, "cadastrarCandidato")).equals("OK")) {
             return response;
         }
 
         // Envia dados ao banco
-        CandidatoDAO candidatoDAO = new CandidatoDAO(this.em);
-        Candidato isCandidato = candidatoDAO.findCandidatoByEmail(this.request.getString("email"));
+        Candidato isCandidato = this.candidatoDAO.findCandidatoByEmail(this.request.getString("email"));
         if (isCandidato == null) {
             Candidato newCandidato = new Candidato();
             newCandidato.setEmail(this.request.getString("email"));
@@ -64,13 +65,13 @@ public class CandidatoController {
             newCandidato.setSenha(this.request.getInt("senha"));
 
             try {
-                candidatoDAO.createCandidato(newCandidato);
+                this.candidatoDAO.createCandidato(newCandidato);
                 String uuid = UUID.randomUUID().toString();
-                
+
                 responseJson.put("operacao", "cadastrarCandidato");
                 responseJson.put("status", 201);
                 responseJson.put("token", uuid);
-                
+
                 return responseJson.toString();
             } catch (Exception ex) {
                 responseJson.put("operacao", "cadastrarCandidato");
@@ -90,14 +91,119 @@ public class CandidatoController {
     }
 
     public String visualizarCandidato() {
-        return "";
+        JSONObject responseJson = new JSONObject();
+
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(this.request, "email");
+        if (!hasKeys) {
+            responseJson.put("operacao", "visualizarCandidato");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Informe todos os campos");
+
+            return responseJson.toString();
+        }
+
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(this.request, "visualizarCandidato")).equals("OK")) {
+            return response;
+        }
+
+        // Find no banco
+        Candidato candidato = this.candidatoDAO.findCandidatoByEmail(this.request.getString("email"));
+        if (candidato == null) {
+            responseJson.put("operacao", "visualizarCandidato");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Email não encontrado");
+
+            return responseJson.toString();
+        }
+
+        responseJson.put("operacao", "visualizarCandidato");
+        responseJson.put("status", 201);
+        responseJson.put("nome", candidato.getNome());
+        responseJson.put("senha", candidato.getSenha());
+
+        return responseJson.toString();
     }
 
     public String atualizarCandidato() {
-        return "";
+        JSONObject responseJson = new JSONObject();
+
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(this.request, "email", "nome", "senha");
+        if (!hasKeys) {
+            responseJson.put("operacao", "atualizarCandidato");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Informe todos os campos");
+
+            return responseJson.toString();
+        }
+
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(this.request, "atualizarCandidato")).equals("OK")) {
+            return response;
+        }
+
+        // Valida nome
+        if (!(response = FormValidator.checkNome(this.request, "atualizarCandidato")).equals("OK")) {
+            return response;
+        }
+
+        // Valida senha
+        if (!(response = FormValidator.checkSenha(this.request, "atualizarCandidato")).equals("OK")) {
+            return response;
+        }
+
+        // Envia dados ao banco
+        boolean success = this.candidatoDAO.updateCandidato(this.request.getString("email"), this.request.getInt("senha"), this.request.getString("nome"));
+        if (success) {
+            responseJson.put("operacao", "atualizarCandidato");
+            responseJson.put("status", 201);
+
+            return responseJson.toString();
+        } else {
+            responseJson.put("operacao", "atualizarCandidato");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "E-mail não encontrado");
+
+            return responseJson.toString();
+        }
     }
 
     public String apagarCandidato() {
-        return "";
+        JSONObject responseJson = new JSONObject();
+
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(this.request, "email");
+        if (!hasKeys) {
+            responseJson.put("operacao", "apagarCandidato");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Informe todos os campos");
+
+            return responseJson.toString();
+        }
+
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(this.request, "apagarCandidato")).equals("OK")) {
+            return response;
+        }
+        
+        // Envia dados ao banco
+        boolean success = this.candidatoDAO.deleteCandidatoByEmail(this.request.getString("email"));
+        if (success) {
+            responseJson.put("operacao", "apagarCandidato");
+            responseJson.put("status", 201);
+
+            return responseJson.toString();
+        } else {
+            responseJson.put("operacao", "apagarCandidato");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "E-mail não encontrado");
+
+            return responseJson.toString();
+        }
     }
 }
