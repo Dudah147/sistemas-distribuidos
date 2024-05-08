@@ -23,7 +23,7 @@ public class LoginCandidatoDAO {
         this.entityManager = entityManager;
     }
 
-    public LoginCandidato findCandidatoByCandidato(Candidato candidato) {
+    public LoginCandidato findLoginByCandidato(Candidato candidato) {
         try {
             TypedQuery<LoginCandidato> query = entityManager.createQuery(
                     "SELECT c FROM LoginCandidato c WHERE c.candidato = :candidato", LoginCandidato.class

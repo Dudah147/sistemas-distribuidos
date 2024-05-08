@@ -57,9 +57,9 @@ public class LoginController {
         if (candidatoCredentials != null) {
             try {
 
-                if (candidatoCredentials.getSenha() == this.request.getInt("senha")) {
+                if (candidatoCredentials.getSenha().equals(this.request.getString("senha"))) {
                     LoginCandidato loginCandidato;
-                    if ((loginCandidato = this.loginCandidatoDAO.findCandidatoByCandidato(candidatoCredentials)) != null) {
+                    if ((loginCandidato = this.loginCandidatoDAO.findLoginByCandidato(candidatoCredentials)) != null) {
                         responseJson.put("operacao", "loginCandidato");
                         responseJson.put("status", 200);
                         responseJson.put("token", loginCandidato.getToken());

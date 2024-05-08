@@ -21,7 +21,10 @@ public class ClientApp {
      */
     public static void main(String[] args) {
         try {
-            Socket socket = new Socket("localhost", 22222);
+            Scanner ip = new Scanner(System.in);
+            System.out.println("Digite o IP:");
+            
+            Socket socket = new Socket(ip.nextLine(), 22222);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             Scanner scanner = new Scanner(System.in);
@@ -36,6 +39,7 @@ public class ClientApp {
             System.out.println("4- apagarCandidato");
             System.out.println("5- loginCandidato");
             System.out.println("6- logoutCandidato");
+            System.out.println("7- EXIT");
             String token = "";
             while (true) {
                 switch (Integer.parseInt(scanner.nextLine())) {
@@ -66,7 +70,7 @@ public class ClientApp {
                         json.put("operacao", "cadastrarCandidato");
                         json.put("nome", "Usuario");
                         json.put("email", "pedro@gmail.com");
-                        json.put("senha", 1234);
+                        json.put("senha", "1234");
 
                         out.println(json.toString());
                         System.out.println("Resposta do servidor: " + in.readLine());
@@ -76,7 +80,7 @@ public class ClientApp {
                         json.put("operacao", "cadastrarCandidato");
                         json.put("nome", "Usuario");
                         json.put("email", "pedro@gmail.com");
-                        json.put("senha", 1234);
+                        json.put("senha", "1234");
 
                         out.println(json.toString());
                         System.out.println("Resposta do servidor: " + in.readLine());
@@ -116,7 +120,7 @@ public class ClientApp {
                         json.put("operacao", "atualizarCandidato");
                         json.put("nome", "Usuario");
                         json.put("email", "naoencontrado@gmail.com");
-                        json.put("senha", 1234);
+                        json.put("senha", "1234");
                         out.println(json.toString());
                         System.out.println("Resposta do servidor: " + in.readLine());
 
@@ -125,7 +129,7 @@ public class ClientApp {
                         json.put("operacao", "atualizarCandidato");
                         json.put("nome", "UsuarioAtualizado");
                         json.put("email", "pedro@gmail.com");
-                        json.put("senha", 12345);
+                        json.put("senha", "12345");
                         out.println(json.toString());
                         System.out.println("Resposta do servidor: " + in.readLine());
                     }
@@ -158,24 +162,25 @@ public class ClientApp {
                         json = new JSONObject();
                         json.put("operacao", "loginCandidato");
                         json.put("email", "pedro@gmail.com");
-                        json.put("senha", 12345);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-
-                        // SUCESSO
-                        json = new JSONObject();
-                        json.put("operacao", "loginCandidato");
-                        json.put("email", "pedro@gmail.com");
-                        json.put("senha", 1234);
+                        json.put("senha", "12345");
+                        
                         out.println(json.toString());
                         String response = in.readLine();
                         System.out.println("Resposta do servidor: " + response);
-
                         try {
                             token = new JSONObject(response).getString("token");
                         } catch (JSONException ex) {
                             System.out.println("Erro ao tentar resgatar token");
                         }
+                        
+
+                        // SUCESSO
+                        json = new JSONObject();
+                        json.put("operacao", "loginCandidato");
+                        json.put("email", "pedro@gmail.com");
+                        json.put("senha", "1234");
+                        out.println(json.toString());
+                        System.out.println("Resposta do servidor: " + in.readLine());
                     }
 
                     case 6 -> {

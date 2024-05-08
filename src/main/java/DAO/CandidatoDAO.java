@@ -49,7 +49,7 @@ public class CandidatoDAO {
         }
     }
 
-    public boolean updateCandidato(String email, int newPassword, String newUsername) {
+    public boolean updateCandidato(String email, String newPassword, String newUsername) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();

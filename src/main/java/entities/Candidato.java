@@ -5,6 +5,8 @@
 package entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  *
@@ -16,10 +18,12 @@ public class Candidato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private int idCandidato;
     private String email;
     private String nome;
-    private int senha;
+    private String senha;
+    
 
     public int getIdCandidato() {
         return idCandidato;
@@ -45,11 +49,11 @@ public class Candidato {
         this.nome = nome;
     }
 
-    public int getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(int senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 

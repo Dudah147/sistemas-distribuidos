@@ -11,16 +11,20 @@ import jakarta.persistence.*;
  * @author dudam
  */
 @Entity
-@Table(name="loginCandidato")
+@Table(name = "loginCandidato")
 public class LoginCandidato {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idLoginCandidato;
-    
+
     private String token;
-    
+
     @ManyToOne
-    @JoinColumn(name = "idCandidato", nullable = false, foreignKey = @ForeignKey(name = "FK_candidato_login"))
+    @JoinColumn(name = "idCandidato", nullable = false, foreignKey = @ForeignKey(
+            name = "FK_LOGIN_CANDIDATO",
+            foreignKeyDefinition = "FOREIGN KEY (idCandidato) REFERENCES candidato(idCandidato) ON UPDATE CASCADE ON DELETE CASCADE"
+    ))
     private Candidato candidato;
 
     public int getIdLoginCandidato() {

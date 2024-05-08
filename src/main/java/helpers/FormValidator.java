@@ -61,7 +61,7 @@ public class FormValidator {
         JSONObject responseJson = new JSONObject();
 
         try {
-            String senha = String.valueOf(request.getInt("senha"));
+            String senha = String.valueOf(request.getString("senha"));
             if (senha == null || senha.length() < 3 || senha.length() >= 8) {
                 responseJson.put("operacao", operacao);
                 responseJson.put("status", 404);
@@ -72,7 +72,7 @@ public class FormValidator {
         } catch (JSONException ex) {
             responseJson.put("operacao", operacao);
             responseJson.put("status", 404);
-            responseJson.put("mensagem", "Senha deve ser numérica");
+            responseJson.put("mensagem", "Senha deve ser String");
 
             return responseJson.toString();
         }

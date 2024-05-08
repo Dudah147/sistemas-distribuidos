@@ -62,7 +62,7 @@ public class CandidatoController {
             Candidato newCandidato = new Candidato();
             newCandidato.setEmail(this.request.getString("email"));
             newCandidato.setNome(this.request.getString("nome"));
-            newCandidato.setSenha(this.request.getInt("senha"));
+            newCandidato.setSenha(this.request.getString("senha"));
 
             try {
                 this.candidatoDAO.createCandidato(newCandidato);
@@ -157,7 +157,7 @@ public class CandidatoController {
         }
 
         // Envia dados ao banco
-        boolean success = this.candidatoDAO.updateCandidato(this.request.getString("email"), this.request.getInt("senha"), this.request.getString("nome"));
+        boolean success = this.candidatoDAO.updateCandidato(this.request.getString("email"), this.request.getString("senha"), this.request.getString("nome"));
         if (success) {
             responseJson.put("operacao", "atualizarCandidato");
             responseJson.put("status", 201);

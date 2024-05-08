@@ -7,6 +7,7 @@ package server;
 import controller.CandidatoController;
 import controller.LoginController;
 import jakarta.persistence.EntityManager;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -26,18 +27,29 @@ public class Routes {
     }
     
     public String handleRequest(){
-        return switch (request.getString("operacao")) {
-            // --> Rotas CANDIDATO
-            case "cadastrarCandidato" -> this.candidatoController.cadastrarCandidato();
-            case "visualizarCandidato" -> this.candidatoController.visualizarCandidato();
-            case "atualizarCandidato" -> this.candidatoController.atualizarCandidato();
-            case "apagarCandidato" -> this.candidatoController.apagarCandidato();
-                
-            // --> Rotas para LOGIN
-            case "loginCandidato" -> this.loginController.loginCandidato();
-            case "logout" -> this.loginController.logout();
-                
-            default -> "ROTA NÃO ENCONTRADA";
-        };
+        try{
+            return switch (request.getString("operacao")) {
+                // --> Rotas CANDIDATO
+                case "cadastrarCandidato" ->
+                    this.candidatoController.cadastrarCandidato();
+                case "visualizarCandidato" ->
+                    this.candidatoController.visualizarCandidato();
+                case "atualizarCandidato" ->
+                    this.candidatoController.atualizarCandidato();
+                case "apagarCandidato" ->
+                    this.candidatoController.apagarCandidato();
+
+                // --> Rotas para LOGIN
+                case "loginCandidato" ->
+                    this.loginController.loginCandidato();
+                case "logout" ->
+                    this.loginController.logout();
+
+                default ->
+                    "OPERACAO '" + request.getString("operacao") +"' NÃO ENCONTRADA";
+            };
+        } catch (JSONException ex) {
+            return "Chave 'operacao' não encontrada";
+        }
     }
 }

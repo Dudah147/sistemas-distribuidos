@@ -41,12 +41,11 @@ public class ClientHandler extends Thread {
                 out.println(response);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Cliente desconectado!");
         } finally {
             try {
                 clientSocket.close();
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
