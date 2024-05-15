@@ -39,7 +39,7 @@ public class FormValidator {
         JSONObject responseJson = new JSONObject();
 
         try {
-            if (request.getString("nome") == null || request.getString("nome").length() < 6 || request.getString("nome").length() >= 30) {
+            if (request.getString("nome") == null || request.getString("nome").length() < 6 || request.getString("nome").length() > 30) {
                 responseJson.put("operacao", operacao);
                 responseJson.put("status", 404);
                 responseJson.put("mensagem", "Nome do usuário inválido");
@@ -62,7 +62,8 @@ public class FormValidator {
 
         try {
             String senha = String.valueOf(request.getString("senha"));
-            if (senha == null || senha.length() < 3 || senha.length() >= 8) {
+            System.out.println(senha.length());
+            if (senha == null || senha.length() < 3 || senha.length() > 8) {
                 responseJson.put("operacao", operacao);
                 responseJson.put("status", 404);
                 responseJson.put("mensagem", "Senha deve ser de 3 a 8 caracteres");
@@ -91,7 +92,7 @@ public class FormValidator {
     }
 
     public static boolean isValidEmail(String email) {
-        if (email == null || email.length() < 7 || email.length() >= 50) {
+        if (email == null || email.length() < 7 || email.length() > 50) {
             return false;
         }
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
