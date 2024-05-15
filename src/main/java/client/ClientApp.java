@@ -119,14 +119,12 @@ public class ClientApp {
                     }
 
                     case 7 -> {
-                        out.println("exit");
                         System.out.println("Deconectando...");
-                        break;
+                        return;
                     }
                     default -> {
-                        out.println("exit");
                         System.out.println("Opção não encontrada");
-                        break;
+                        return;
                     }
                 }
             }
