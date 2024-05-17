@@ -6,8 +6,6 @@ package client;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -16,122 +14,35 @@ import org.json.JSONObject;
  */
 public class ClientApp {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    private String serverIp;
+    private Socket socket;
+    private PrintWriter out;
+    private BufferedReader in;
+
+    public ClientApp(String serverIp) {
+        this.serverIp = serverIp;
+    }
+
+    public boolean connect() {
         try {
-            Scanner ip = new Scanner(System.in);
-            System.out.println("Digite o IP:");
-            
-            Socket socket = new Socket(ip.nextLine(), 22222);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            Scanner scanner = new Scanner(System.in);
-            JSONObject json = new JSONObject();
-
-            System.out.println("Conectado ao servidor.");
-            while (true) {
-                System.out.println("Digite o numero da operacao:");
-                System.out.println("1- cadastrarCandidato");
-                System.out.println("2- visualizarCandidato");
-                System.out.println("3- atualizarCandidato");
-                System.out.println("4- apagarCandidato");
-                System.out.println("5- loginCandidato");
-                System.out.println("6- logoutCandidato");
-                System.out.println("7- EXIT");
-            
-            
-                switch (Integer.parseInt(scanner.nextLine())) {
-                    case 1 -> {
-                        System.out.println("Nome: ");
-                        String nome = scanner.nextLine();
-                        System.out.println("Email: ");
-                        String email = scanner.nextLine();
-                        System.out.println("Senha: ");
-                        String senha = scanner.nextLine();
-                        
-                        json.put("operacao", "cadastrarCandidato");
-                        json.put("nome", nome);
-                        json.put("email", email);
-                        json.put("senha", senha);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-                    }
-                    case 2 -> {
-                        System.out.println("Email: ");
-                        String email = scanner.nextLine();
-                        
-                        json.put("operacao", "visualizarCandidato");
-                        json.put("email", email);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-                    }
-                    case 3 -> {
-                        System.out.println("Nome: ");
-                        String nome = scanner.nextLine();
-                        System.out.println("Email: ");
-                        String email = scanner.nextLine();
-                        System.out.println("Senha: ");
-                        String senha = scanner.nextLine();
-                        
-                        json.put("operacao", "atualizarCandidato");
-                        json.put("nome", nome);
-                        json.put("email", email);
-                        json.put("senha", senha);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-                    }
-
-                    case 4 -> {
-                        System.out.println("Email: ");
-                        String email = scanner.nextLine();
-                        
-                        json.put("operacao", "apagarCandidato");
-                        json.put("email", email);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-                    }
-
-                    case 5 -> {
-
-                        System.out.println("Email: ");
-                        String email = scanner.nextLine();
-                        System.out.println("Senha: ");
-                        String senha = scanner.nextLine();
-                        
-                        json.put("operacao", "loginCandidato");
-                        json.put("email", email);
-                        json.put("senha", senha);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-                    }
-
-                    case 6 -> {
-                        System.out.println("Token: ");
-                        String token = scanner.nextLine();
-
-                        
-                        json.put("operacao", "logout");
-                        json.put("token", token);
-                        out.println(json.toString());
-                        System.out.println("Resposta do servidor: " + in.readLine());
-                    }
-
-                    case 7 -> {
-                        out.println("exit");
-                        System.out.println("Deconectando...");
-                        break;
-                    }
-                    default -> {
-                        out.println("exit");
-                        System.out.println("Opção não encontrada");
-                        break;
-                    }
-                }
-            }
+            this.socket = new Socket(this.serverIp, 22222); 
+            this.out = new PrintWriter(this.socket.getOutputStream(), true);
+            this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            System.out.println("Conectado ao servidor: " + this.serverIp);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String callServer(JSONObject request) {
+        try {
+            out.println(request.toString());
+            return this.in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Erro na comunicação com o servidor";
         }
     }
 
