@@ -4,8 +4,8 @@
  */
 package DAO;
 
-import entities.Candidato;
-import entities.LoginCandidato;
+import entities.Empresa;
+import entities.LoginEmpresa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
@@ -15,30 +15,30 @@ import jakarta.persistence.TypedQuery;
  *
  * @author dudam
  */
-public class LoginCandidatoDAO {
+public class LoginEmpresaDAO {
 
     private EntityManager entityManager;
 
-    public LoginCandidatoDAO(EntityManager entityManager) {
+    public LoginEmpresaDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public LoginCandidato findLoginByCandidato(Candidato candidato) {
+    public LoginEmpresa findLoginByEmpresa(Empresa empresa) {
         try {
-            TypedQuery<LoginCandidato> query = entityManager.createQuery(
-                    "SELECT c FROM LoginCandidato c WHERE c.candidato = :candidato", LoginCandidato.class
+            TypedQuery<LoginEmpresa> query = entityManager.createQuery(
+                    "SELECT c FROM LoginEmpresa c WHERE c.empresa = :empresa", LoginEmpresa.class
             );
-            query.setParameter("candidato", candidato);
+            query.setParameter("empresa", empresa);
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
     
-    public LoginCandidato findCandidatoByToken(String token) {
+    public LoginEmpresa findEmpresaByToken(String token) {
         try {
-            TypedQuery<LoginCandidato> query = entityManager.createQuery(
-                    "SELECT c FROM LoginCandidato c WHERE c.token = :token", LoginCandidato.class
+            TypedQuery<LoginEmpresa> query = entityManager.createQuery(
+                    "SELECT c FROM LoginEmpresa c WHERE c.token = :token", LoginEmpresa.class
             );
             query.setParameter("token", token);
             return query.getSingleResult();
@@ -47,7 +47,7 @@ public class LoginCandidatoDAO {
         }
     }
 
-    public void createLoginCandidato(LoginCandidato loginCandidato) {
+    public void createLoginEmpresa(LoginEmpresa loginEmpresa) {
         EntityTransaction transaction;
         transaction = entityManager.getTransaction();
         try {
@@ -56,7 +56,7 @@ public class LoginCandidatoDAO {
         }
         
         try {
-            entityManager.persist(loginCandidato);
+            entityManager.persist(loginEmpresa);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             if (transaction.isActive()) {
@@ -68,7 +68,7 @@ public class LoginCandidatoDAO {
         }
     }
 
-    public boolean deleteLoginCandidato(String token) {
+    public boolean deleteLoginEmpresa(String token) {
         EntityTransaction transaction;
         transaction = entityManager.getTransaction();
         try {
@@ -77,9 +77,9 @@ public class LoginCandidatoDAO {
         }
         try {
 
-            LoginCandidato loginCandidato = this.findCandidatoByToken(token);
-            if (loginCandidato != null) {
-                entityManager.remove(loginCandidato);
+            LoginEmpresa loginEmpresa = this.findEmpresaByToken(token);
+            if (loginEmpresa != null) {
+                entityManager.remove(loginEmpresa);
                 transaction.commit();
                 return true;
             } else {

@@ -80,6 +80,29 @@ public class FormValidator {
 
         return "OK";
     }
+    
+    public static String checkCnpj(JSONObject request, String operacao) {
+        JSONObject responseJson = new JSONObject();
+
+        try {
+            String cnpj = String.valueOf(request.getString("cnpj"));
+            if (cnpj == null || cnpj.length() != 14) {
+                responseJson.put("operacao", operacao);
+                responseJson.put("status", 404);
+                responseJson.put("mensagem", "Cnpj deve conter 14 caracteres");
+
+                return responseJson.toString();
+            }
+        } catch (JSONException ex) {
+            responseJson.put("operacao", operacao);
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Cnpj deve ser String");
+
+            return responseJson.toString();
+        }
+
+        return "OK";
+    }
 
     public static boolean checkKeys(JSONObject request, String... keys) {
         for (String key : keys) {

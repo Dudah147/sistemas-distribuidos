@@ -4,7 +4,7 @@
  */
 package DAO;
 
-import entities.Candidato;
+import entities.Empresa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
@@ -14,18 +14,18 @@ import jakarta.persistence.TypedQuery;
  *
  * @author dudam
  */
-public class CandidatoDAO {
+public class EmpresaDAO {
 
     private EntityManager entityManager;
 
-    public CandidatoDAO(EntityManager entityManager) {
+    public EmpresaDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public Candidato findCandidatoByEmail(String email) {
+    public Empresa findEmpresaByEmail(String email) {
         try {
-            TypedQuery<Candidato> query = entityManager.createQuery(
-                    "SELECT c FROM Candidato c WHERE c.email = :email", Candidato.class
+            TypedQuery<Empresa> query = entityManager.createQuery(
+                    "SELECT c FROM Empresa c WHERE c.email = :email", Empresa.class
             );
             query.setParameter("email", email);
             return query.getSingleResult();
@@ -34,11 +34,11 @@ public class CandidatoDAO {
         }
     }
 
-    public void createCandidato(Candidato candidato) {
+    public void createEmpresa(Empresa empresa) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            entityManager.persist(candidato);
+            entityManager.persist(empresa);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             if (transaction.isActive()) {
@@ -48,19 +48,22 @@ public class CandidatoDAO {
         }
     }
 
-    public boolean updateCandidato(String email, String newPassword, String newUsername) {
+    public boolean updateEmpresa(String email, String newPassword, String newRazaoSocial, String newCnpj, String newDescricao, String newRamo) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
         } catch (Exception e) {
         }
         try {
-            Candidato candidato = this.findCandidatoByEmail(email);
+            Empresa empresa = this.findEmpresaByEmail(email);
 
-            if (candidato != null) {
-                candidato.setSenha(newPassword);
-                candidato.setNome(newUsername);
-                entityManager.merge(candidato);
+            if (empresa != null) {
+                empresa.setSenha(newPassword);
+                empresa.setRazaoSocial(newRazaoSocial);
+                empresa.setCnpj(newCnpj);
+                empresa.setDescricao(newDescricao);
+                empresa.setRamo(newRamo);
+                entityManager.merge(empresa);
                 transaction.commit();
                 return true;
             } else {
@@ -75,7 +78,7 @@ public class CandidatoDAO {
         }
     }
 
-    public boolean deleteCandidatoByEmail(String email) {
+    public boolean deleteEmpresaByEmail(String email) {
         EntityTransaction transaction;
         transaction = entityManager.getTransaction();
         try {
@@ -84,9 +87,9 @@ public class CandidatoDAO {
         }
         try {
 
-            Candidato candidato = this.findCandidatoByEmail(email);
-            if (candidato != null) {
-                entityManager.remove(candidato);
+            Empresa empresa = this.findEmpresaByEmail(email);
+            if (empresa != null) {
+                entityManager.remove(empresa);
                 transaction.commit();
                 return true;
             } else {
@@ -100,5 +103,4 @@ public class CandidatoDAO {
             return false;
         }
     }
-
 }

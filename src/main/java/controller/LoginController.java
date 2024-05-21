@@ -5,9 +5,13 @@
 package controller;
 
 import DAO.CandidatoDAO;
+import DAO.EmpresaDAO;
 import DAO.LoginCandidatoDAO;
+import DAO.LoginEmpresaDAO;
 import entities.Candidato;
+import entities.Empresa;
 import entities.LoginCandidato;
+import entities.LoginEmpresa;
 import jakarta.persistence.EntityManager;
 import org.json.JSONObject;
 import helpers.FormValidator;
@@ -24,13 +28,17 @@ public class LoginController {
     private EntityManager em;
     private JSONObject request;
     private CandidatoDAO candidatoDAO;
+    private EmpresaDAO empresaDAO;
     private LoginCandidatoDAO loginCandidatoDAO;
+    private LoginEmpresaDAO loginEmpresaDAO;
 
     public LoginController(EntityManager em, JSONObject request) {
         this.em = em;
         this.request = request;
         this.candidatoDAO = new CandidatoDAO(em);
+        this.empresaDAO = new EmpresaDAO(em);
         this.loginCandidatoDAO = new LoginCandidatoDAO(em);
+        this.loginEmpresaDAO = new LoginEmpresaDAO(em);
     }
 
     public String loginCandidato() {
@@ -105,9 +113,76 @@ public class LoginController {
     }
 
     public String loginEmpresa() {
-        return "";
-    }
+        JSONObject responseJson = new JSONObject();
 
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(this.request, "email", "senha");
+        if (!hasKeys) {
+            responseJson.put("operacao", "loginEmpresa");
+            responseJson.put("status", 401);
+            responseJson.put("mensagem", "Informe todos os campos");
+
+            return responseJson.toString();
+        }
+
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(this.request, "loginEmpresa")).equals("OK")) {
+            return response;
+        }
+
+        Empresa empresaCredentials = this.empresaDAO.findEmpresaByEmail(this.request.getString("email"));
+
+        if (empresaCredentials != null) {
+            try {
+
+                if (empresaCredentials.getSenha().equals(this.request.getString("senha"))) {
+                    LoginEmpresa loginEmpresa;
+                    if ((loginEmpresa = this.loginEmpresaDAO.findLoginByEmpresa(empresaCredentials)) != null) {
+                        responseJson.put("operacao", "loginEmpresa");
+                        responseJson.put("status", 200);
+                        responseJson.put("token", loginEmpresa.getToken());
+
+                        return responseJson.toString();
+                    }
+
+                    String uuid = UUID.randomUUID().toString();
+
+                    loginEmpresa = new LoginEmpresa();
+                    loginEmpresa.setEmpresa(empresaCredentials);
+                    loginEmpresa.setToken(uuid);
+
+                    this.loginEmpresaDAO.createLoginEmpresa(loginEmpresa);
+
+                    responseJson.put("operacao", "loginEmpresa");
+                    responseJson.put("status", 200);
+                    responseJson.put("token", uuid);
+
+                    return responseJson.toString();
+
+                }
+            } catch (JSONException ex) {
+                responseJson.put("operacao", "loginEmpresa");
+                responseJson.put("status", 401);
+                responseJson.put("mensagem", "Senha deve ser numérica");
+
+                return responseJson.toString();
+            } catch (Exception ex) {
+                responseJson.put("operacao", "loginEmpresa");
+                responseJson.put("status", 401);
+                responseJson.put("mensagem", "Erro ao tentar cadastrar Login Empresa");
+
+                return responseJson.toString();
+            }
+
+        }
+        responseJson.put("operacao", "loginEmpresa");
+        responseJson.put("status", 401);
+        responseJson.put("mensagem", "Login ou senha incorretos");
+
+        return responseJson.toString();
+    }
+    // TODO: logoutEmpresa
     public String logout() {
         JSONObject responseJson = new JSONObject();
 
