@@ -52,41 +52,49 @@ public class EmpresaController {
             return response;
         }
 
-        // Envia dados ao banco
-        Empresa isEmpresa = this.empresaDAO.findEmpresaByEmail(request.getString("email"));
-        if (isEmpresa == null) {
-            Empresa newEmpresa = new Empresa();
-            newEmpresa.setEmail(request.getString("email"));
-            newEmpresa.setRazaoSocial(request.getString("razaoSocial"));
-            newEmpresa.setSenha(request.getString("senha"));
-            newEmpresa.setCnpj(request.getString("cnpj"));
-            newEmpresa.setDescricao(request.getString("descricao"));
-            newEmpresa.setRamo(request.getString("ramo"));
-
-            try {
-                this.empresaDAO.createEmpresa(newEmpresa);
-                String uuid = UUID.randomUUID().toString();
-
-                responseJson.put("operacao", "cadastrarEmpresa");
-                responseJson.put("status", 201);
-                responseJson.put("token", uuid);
-
-                return responseJson.toString();
-            } catch (Exception ex) {
-                responseJson.put("operacao", "cadastrarEmpresa");
-                responseJson.put("status", 404);
-                responseJson.put("mensagem", "Erro ao tentar cadastrar Empresa");
-
-                return responseJson.toString();
-            }
-
-        } else {
+        Empresa isEmpresaEmail = this.empresaDAO.findEmpresaByEmail(request.getString("email"));
+        if (isEmpresaEmail != null) {
             responseJson.put("operacao", "cadastrarEmpresa");
             responseJson.put("status", 422);
             responseJson.put("mensagem", "E-mail já cadastrado");
 
             return responseJson.toString();
         }
+        Empresa isEmpresaCnpj = this.empresaDAO.findEmpresaByCnpj(request.getString("cnpj"));
+        if (isEmpresaCnpj != null) {
+            responseJson.put("operacao", "cadastrarEmpresa");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "CNPJ já cadastrado");
+
+            return responseJson.toString();
+        }
+        
+        // Envia dados ao banco
+        Empresa newEmpresa = new Empresa();
+        newEmpresa.setEmail(request.getString("email"));
+        newEmpresa.setRazaoSocial(request.getString("razaoSocial"));
+        newEmpresa.setSenha(request.getString("senha"));
+        newEmpresa.setCnpj(request.getString("cnpj"));
+        newEmpresa.setDescricao(request.getString("descricao"));
+        newEmpresa.setRamo(request.getString("ramo"));
+
+        try {
+            this.empresaDAO.createEmpresa(newEmpresa);
+            String uuid = UUID.randomUUID().toString();
+
+            responseJson.put("operacao", "cadastrarEmpresa");
+            responseJson.put("status", 201);
+            responseJson.put("token", uuid);
+
+            return responseJson.toString();
+        } catch (Exception ex) {
+            responseJson.put("operacao", "cadastrarEmpresa");
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Erro ao tentar cadastrar Empresa");
+
+            return responseJson.toString();
+        }
+
     }
 
     public String visualizarEmpresa(JSONObject request) {
@@ -157,6 +165,16 @@ public class EmpresaController {
         if (!(response = FormValidator.checkSenha(request, "atualizarEmpresa")).equals("OK")) {
             return response;
         }
+        
+        // Verifica se o CNPJ está em uso
+         Empresa isEmpresaCnpj = this.empresaDAO.findEmpresaByCnpj(request.getString("cnpj"));
+        if (isEmpresaCnpj != null && !isEmpresaCnpj.getEmail().equals(request.getString("email"))) {
+            responseJson.put("operacao", "atualizarEmpresa");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "CNPJ já cadastrado");
+
+            return responseJson.toString();
+        }
 
         // Envia dados ao banco
         boolean success = this.empresaDAO.updateEmpresa(request.getString("email"), request.getString("senha"), request.getString("razaoSocial"), request.getString("cnpj"), request.getString("descricao"), request.getString("ramo"));
@@ -192,7 +210,7 @@ public class EmpresaController {
         if (!(response = FormValidator.checkEmail(request, "apagarEmpresa")).equals("OK")) {
             return response;
         }
-        
+
         // Envia dados ao banco
         boolean success = this.empresaDAO.deleteEmpresaByEmail(request.getString("email"));
         if (success) {

@@ -57,7 +57,6 @@ public class Routes {
                     this.loginController.loginEmpresa(requestJSON);
                 case "logout" ->
                     this.loginController.logout(requestJSON);
-                // TODO: logoutEmpresa
                 default ->
                     "OPERACAO '" + requestJSON.getString("operacao") + "' NÃO ENCONTRADA";
             };

@@ -33,6 +33,18 @@ public class EmpresaDAO {
             return null;
         }
     }
+    
+    public Empresa findEmpresaByCnpj(String cnpj) {
+        try {
+            TypedQuery<Empresa> query = entityManager.createQuery(
+                    "SELECT c FROM Empresa c WHERE c.cnpj = :cnpj", Empresa.class
+            );
+            query.setParameter("cnpj", cnpj);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     public void createEmpresa(Empresa empresa) {
         EntityTransaction transaction = entityManager.getTransaction();

@@ -108,8 +108,10 @@ public class HomeEmpresa extends javax.swing.JFrame {
 
         jLabel5.setText("Descrição");
 
-        inpDescricao.setColumns(20);
-        inpDescricao.setRows(5);
+        inpDescricao.setColumns(10);
+        inpDescricao.setLineWrap(true);
+        inpDescricao.setRows(1);
+        inpDescricao.setAutoscrolls(false);
         jScrollPane1.setViewportView(inpDescricao);
 
         javax.swing.GroupLayout pnEmpresaLayout = new javax.swing.GroupLayout(pnEmpresa);

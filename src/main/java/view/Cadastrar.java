@@ -35,6 +35,7 @@ public class Cadastrar extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        cbUsuario = new javax.swing.JComboBox<>();
         pnEmpresa = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         inpRazaoSocial = new javax.swing.JTextField();
@@ -42,12 +43,13 @@ public class Cadastrar extends javax.swing.JFrame {
         inpCnpj = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         inpEmailEmpresa = new javax.swing.JTextField();
-        inpSenhaEmpresa = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        inpDescricao = new javax.swing.JTextField();
-        inpRamo = new javax.swing.JTextField();
+        inpSenhaEmpresa = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        inpRamo = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        inpDescricao = new javax.swing.JTextArea();
         pnCandidato = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         inpNome = new javax.swing.JTextField();
@@ -56,12 +58,18 @@ public class Cadastrar extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         inpSenha = new javax.swing.JTextField();
         bttnCadastrar = new javax.swing.JButton();
-        cbUsuario = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Cadastrar ");
+
+        cbUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Candidato", "Empresa" }));
+        cbUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Razão Social");
 
@@ -87,21 +95,15 @@ public class Cadastrar extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Senha");
+
         inpSenhaEmpresa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inpSenhaEmpresaActionPerformed(evt);
             }
         });
 
-        jLabel8.setText("Senha");
-
-        jLabel9.setText("Descricao");
-
-        inpDescricao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpDescricaoActionPerformed(evt);
-            }
-        });
+        jLabel10.setText("Ramo");
 
         inpRamo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +111,13 @@ public class Cadastrar extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setText("Ramo");
+        jLabel9.setText("Descricao");
+
+        inpDescricao.setColumns(20);
+        inpDescricao.setLineWrap(true);
+        inpDescricao.setRows(1);
+        inpDescricao.setAutoscrolls(false);
+        jScrollPane1.setViewportView(inpDescricao);
 
         javax.swing.GroupLayout pnEmpresaLayout = new javax.swing.GroupLayout(pnEmpresa);
         pnEmpresa.setLayout(pnEmpresaLayout);
@@ -117,33 +125,33 @@ public class Cadastrar extends javax.swing.JFrame {
             pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
                 .addGap(0, 16, Short.MAX_VALUE)
-                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnEmpresaLayout.createSequentialGroup()
                             .addComponent(jLabel8)
-                            .addGap(20, 20, 20)
+                            .addGap(18, 18, 18)
                             .addComponent(inpSenhaEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
                             .addComponent(jLabel7)
                             .addGap(18, 18, 18)
-                            .addComponent(inpEmailEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inpEmailEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(pnEmpresaLayout.createSequentialGroup()
-                            .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel5))
-                            .addGap(18, 18, 18)
-                            .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(inpCnpj, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                                .addComponent(inpRazaoSocial)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
-                            .addComponent(jLabel9)
-                            .addGap(18, 18, 18)
-                            .addComponent(inpDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
                             .addComponent(jLabel10)
                             .addGap(18, 18, 18)
-                            .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnEmpresaLayout.createSequentialGroup()
+                        .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(inpCnpj, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                            .addComponent(inpRazaoSocial)))
+                    .addGroup(pnEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)))
                 .addGap(20, 20, 20))
         );
         pnEmpresaLayout.setVerticalGroup(
@@ -167,13 +175,15 @@ public class Cadastrar extends javax.swing.JFrame {
                     .addComponent(inpSenhaEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(inpDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel2.setText("Nome");
@@ -226,13 +236,6 @@ public class Cadastrar extends javax.swing.JFrame {
             }
         });
 
-        cbUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Candidato", "Empresa" }));
-        cbUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbUsuarioActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -245,9 +248,11 @@ public class Cadastrar extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(49, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnCandidato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bttnCadastrar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bttnCadastrar)
+                        .addGap(9, 9, 9)))
                 .addGap(76, 76, 76))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -264,14 +269,14 @@ public class Cadastrar extends javax.swing.JFrame {
                     .addComponent(cbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addComponent(pnCandidato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(bttnCadastrar)
-                .addGap(27, 27, 27))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(58, Short.MAX_VALUE)
+                    .addContainerGap(52, Short.MAX_VALUE)
                     .addComponent(pnEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(55, Short.MAX_VALUE)))
+                    .addContainerGap(41, Short.MAX_VALUE)))
         );
 
         pack();
@@ -337,10 +342,6 @@ public class Cadastrar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inpSenhaEmpresaActionPerformed
 
-    private void inpDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpDescricaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpDescricaoActionPerformed
-
     private void inpRamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpRamoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inpRamoActionPerformed
@@ -359,7 +360,7 @@ public class Cadastrar extends javax.swing.JFrame {
     private javax.swing.JButton bttnCadastrar;
     private javax.swing.JComboBox<String> cbUsuario;
     private javax.swing.JTextField inpCnpj;
-    private javax.swing.JTextField inpDescricao;
+    private javax.swing.JTextArea inpDescricao;
     private javax.swing.JTextField inpEmail;
     private javax.swing.JTextField inpEmailEmpresa;
     private javax.swing.JTextField inpNome;
@@ -377,6 +378,7 @@ public class Cadastrar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnCandidato;
     private javax.swing.JPanel pnEmpresa;
     // End of variables declaration//GEN-END:variables
