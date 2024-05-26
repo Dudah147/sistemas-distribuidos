@@ -26,26 +26,26 @@ import org.json.JSONException;
 public class LoginController {
 
     private EntityManager em;
-    private JSONObject request;
     private CandidatoDAO candidatoDAO;
     private EmpresaDAO empresaDAO;
     private LoginCandidatoDAO loginCandidatoDAO;
     private LoginEmpresaDAO loginEmpresaDAO;
-
-    public LoginController(EntityManager em, JSONObject request) {
+    private String usuario;
+    
+    public LoginController(EntityManager em) {
         this.em = em;
-        this.request = request;
         this.candidatoDAO = new CandidatoDAO(em);
         this.empresaDAO = new EmpresaDAO(em);
         this.loginCandidatoDAO = new LoginCandidatoDAO(em);
         this.loginEmpresaDAO = new LoginEmpresaDAO(em);
     }
 
-    public String loginCandidato() {
+    public String loginCandidato(JSONObject request) {
+        this.usuario = "Candidato";
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "email", "senha");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "senha");
         if (!hasKeys) {
             responseJson.put("operacao", "loginCandidato");
             responseJson.put("status", 401);
@@ -56,16 +56,16 @@ public class LoginController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request, "loginCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "loginCandidato")).equals("OK")) {
             return response;
         }
 
-        Candidato candidatoCredentials = this.candidatoDAO.findCandidatoByEmail(this.request.getString("email"));
+        Candidato candidatoCredentials = this.candidatoDAO.findCandidatoByEmail(request.getString("email"));
 
         if (candidatoCredentials != null) {
             try {
 
-                if (candidatoCredentials.getSenha().equals(this.request.getString("senha"))) {
+                if (candidatoCredentials.getSenha().equals(request.getString("senha"))) {
                     LoginCandidato loginCandidato;
                     if ((loginCandidato = this.loginCandidatoDAO.findLoginByCandidato(candidatoCredentials)) != null) {
                         responseJson.put("operacao", "loginCandidato");
@@ -112,11 +112,12 @@ public class LoginController {
         return responseJson.toString();
     }
 
-    public String loginEmpresa() {
+    public String loginEmpresa(JSONObject request) {
+        this.usuario = "Empresa";
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "email", "senha");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "senha");
         if (!hasKeys) {
             responseJson.put("operacao", "loginEmpresa");
             responseJson.put("status", 401);
@@ -127,16 +128,16 @@ public class LoginController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request, "loginEmpresa")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "loginEmpresa")).equals("OK")) {
             return response;
         }
 
-        Empresa empresaCredentials = this.empresaDAO.findEmpresaByEmail(this.request.getString("email"));
+        Empresa empresaCredentials = this.empresaDAO.findEmpresaByEmail(request.getString("email"));
 
         if (empresaCredentials != null) {
             try {
 
-                if (empresaCredentials.getSenha().equals(this.request.getString("senha"))) {
+                if (empresaCredentials.getSenha().equals(request.getString("senha"))) {
                     LoginEmpresa loginEmpresa;
                     if ((loginEmpresa = this.loginEmpresaDAO.findLoginByEmpresa(empresaCredentials)) != null) {
                         responseJson.put("operacao", "loginEmpresa");
@@ -183,11 +184,11 @@ public class LoginController {
         return responseJson.toString();
     }
     // TODO: logoutEmpresa
-    public String logout() {
+    public String logout(JSONObject request) {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "token");
+        boolean hasKeys = FormValidator.checkKeys(request, "token");
         if (!hasKeys) {
             responseJson.put("operacao", "logout");
             responseJson.put("status", 401);
@@ -195,8 +196,11 @@ public class LoginController {
 
             return responseJson.toString();
         }
-
-        boolean success = this.loginCandidatoDAO.deleteLoginCandidato(this.request.getString("token"));
+           
+        boolean success;
+        if(this.usuario.equals("Candidato")) success = this.loginCandidatoDAO.deleteLoginCandidato(request.getString("token"));
+        else success = this.loginEmpresaDAO.deleteLoginEmpresa(request.getString("token"));
+        
         if (success) {
             responseJson.put("operacao", "logout");
             responseJson.put("status", 204);

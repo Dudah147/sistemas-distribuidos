@@ -28,7 +28,7 @@ public class ClientHandler extends Thread {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
+            Routes routes = new Routes(em);
             String line;
             while ((line = in.readLine()) != null) {
                 if ("exit".equalsIgnoreCase(line)) {
@@ -37,7 +37,7 @@ public class ClientHandler extends Thread {
                     break;
                 }
                 System.out.println("Recebido do cliente: " + line);
-                String response = new Routes(line, em).handleRequest();
+                String response = routes.handleRequest(line);
                 out.println(response);
             }
         } catch (IOException e) {

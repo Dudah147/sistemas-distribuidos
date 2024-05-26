@@ -18,20 +18,18 @@ import java.util.UUID;
 public class CandidatoController {
 
     private EntityManager em;
-    private JSONObject request;
     private CandidatoDAO candidatoDAO;
 
-    public CandidatoController(EntityManager em, JSONObject request) {
+    public CandidatoController(EntityManager em) {
         this.em = em;
-        this.request = request;
         this.candidatoDAO = new CandidatoDAO(em);
     }
 
-    public String cadastrarCandidato() {
+    public String cadastrarCandidato(JSONObject request) {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "email", "nome", "senha");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "nome", "senha");
         if (!hasKeys) {
             responseJson.put("operacao", "cadastrarCandidato");
             responseJson.put("status", 404);
@@ -42,27 +40,27 @@ public class CandidatoController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request, "cadastrarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "cadastrarCandidato")).equals("OK")) {
             return response;
         }
 
         // Valida nome
-        if (!(response = FormValidator.checkNome(this.request, "cadastrarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkNome(request, "cadastrarCandidato")).equals("OK")) {
             return response;
         }
 
         // Valida senha
-        if (!(response = FormValidator.checkSenha(this.request, "cadastrarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkSenha(request, "cadastrarCandidato")).equals("OK")) {
             return response;
         }
 
         // Envia dados ao banco
-        Candidato isCandidato = this.candidatoDAO.findCandidatoByEmail(this.request.getString("email"));
+        Candidato isCandidato = this.candidatoDAO.findCandidatoByEmail(request.getString("email"));
         if (isCandidato == null) {
             Candidato newCandidato = new Candidato();
-            newCandidato.setEmail(this.request.getString("email"));
-            newCandidato.setNome(this.request.getString("nome"));
-            newCandidato.setSenha(this.request.getString("senha"));
+            newCandidato.setEmail(request.getString("email"));
+            newCandidato.setNome(request.getString("nome"));
+            newCandidato.setSenha(request.getString("senha"));
 
             try {
                 this.candidatoDAO.createCandidato(newCandidato);
@@ -90,11 +88,11 @@ public class CandidatoController {
         }
     }
 
-    public String visualizarCandidato() {
+    public String visualizarCandidato(JSONObject request) {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "email");
+        boolean hasKeys = FormValidator.checkKeys(request, "email");
         if (!hasKeys) {
             responseJson.put("operacao", "visualizarCandidato");
             responseJson.put("status", 404);
@@ -105,12 +103,12 @@ public class CandidatoController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request, "visualizarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "visualizarCandidato")).equals("OK")) {
             return response;
         }
 
         // Find no banco
-        Candidato candidato = this.candidatoDAO.findCandidatoByEmail(this.request.getString("email"));
+        Candidato candidato = this.candidatoDAO.findCandidatoByEmail(request.getString("email"));
         if (candidato == null) {
             responseJson.put("operacao", "visualizarCandidato");
             responseJson.put("status", 404);
@@ -127,11 +125,11 @@ public class CandidatoController {
         return responseJson.toString();
     }
 
-    public String atualizarCandidato() {
+    public String atualizarCandidato(JSONObject request) {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "email", "nome", "senha");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "nome", "senha");
         if (!hasKeys) {
             responseJson.put("operacao", "atualizarCandidato");
             responseJson.put("status", 404);
@@ -142,22 +140,22 @@ public class CandidatoController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request, "atualizarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "atualizarCandidato")).equals("OK")) {
             return response;
         }
 
         // Valida nome
-        if (!(response = FormValidator.checkNome(this.request, "atualizarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkNome(request, "atualizarCandidato")).equals("OK")) {
             return response;
         }
 
         // Valida senha
-        if (!(response = FormValidator.checkSenha(this.request, "atualizarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkSenha(request, "atualizarCandidato")).equals("OK")) {
             return response;
         }
 
         // Envia dados ao banco
-        boolean success = this.candidatoDAO.updateCandidato(this.request.getString("email"), this.request.getString("senha"), this.request.getString("nome"));
+        boolean success = this.candidatoDAO.updateCandidato(request.getString("email"), request.getString("senha"), request.getString("nome"));
         if (success) {
             responseJson.put("operacao", "atualizarCandidato");
             responseJson.put("status", 201);
@@ -172,11 +170,11 @@ public class CandidatoController {
         }
     }
 
-    public String apagarCandidato() {
+    public String apagarCandidato(JSONObject request) {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(this.request, "email");
+        boolean hasKeys = FormValidator.checkKeys(request, "email");
         if (!hasKeys) {
             responseJson.put("operacao", "apagarCandidato");
             responseJson.put("status", 404);
@@ -187,12 +185,12 @@ public class CandidatoController {
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(this.request, "apagarCandidato")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "apagarCandidato")).equals("OK")) {
             return response;
         }
         
         // Envia dados ao banco
-        boolean success = this.candidatoDAO.deleteCandidatoByEmail(this.request.getString("email"));
+        boolean success = this.candidatoDAO.deleteCandidatoByEmail(request.getString("email"));
         if (success) {
             responseJson.put("operacao", "apagarCandidato");
             responseJson.put("status", 201);

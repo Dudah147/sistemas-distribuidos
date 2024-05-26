@@ -181,7 +181,8 @@ public class Login extends javax.swing.JFrame {
         String response = this.clientApp.callServer(request);
         JSONObject json = new JSONObject(response);
         if (json.getInt("status") == 200) {
-            new Home(clientApp, usuario, email, json.getString("token")).setVisible(true);
+            if(usuario.equals("Candidato")) new HomeCandidato(clientApp, usuario, email, json.getString("token")).setVisible(true);
+            else new HomeEmpresa(clientApp, usuario, email, json.getString("token")).setVisible(true);
             dispose();
         } else {
             JOptionPane.showMessageDialog(Login.this, json.getString("mensagem"), "Erro Login", JOptionPane.ERROR_MESSAGE);

@@ -12,7 +12,7 @@ import org.json.JSONObject;
  *
  * @author dudam
  */
-public class Home extends javax.swing.JFrame {
+public class HomeEmpresa extends javax.swing.JFrame {
 
     private ClientApp clientApp;
     private String usuario;
@@ -21,7 +21,7 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public Home(ClientApp clientApp, String usuario, String email, String token) {
+    public HomeEmpresa(ClientApp clientApp, String usuario, String email, String token) {
         initComponents();
         this.clientApp = clientApp;
         this.usuario = usuario;
@@ -39,31 +39,45 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        pnEmpresa = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        inpNome = new javax.swing.JTextField();
+        inpRazaoSocial = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        inpCnpj = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         inpEmail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         inpSenha = new javax.swing.JTextField();
+        inpRamo = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        inpDescricao = new javax.swing.JTextArea();
         bttnAtualizar = new javax.swing.JToggleButton();
         bttnLogout = new javax.swing.JToggleButton();
         bttnApagar = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(null);
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Bem vindo(a)");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pnEmpresa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel3.setText("Nome");
+        jLabel3.setText("Razão Social");
 
-        inpNome.addActionListener(new java.awt.event.ActionListener() {
+        inpRazaoSocial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNomeActionPerformed(evt);
+                inpRazaoSocialActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("CNPJ");
+
+        inpCnpj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpCnpjActionPerformed(evt);
             }
         });
 
@@ -84,46 +98,84 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inpNome, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(26, 26, 26)
-                    .addComponent(jLabel3)
-                    .addContainerGap(276, Short.MAX_VALUE)))
+        inpRamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpRamoActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Ramo");
+
+        jLabel5.setText("Descrição");
+
+        inpDescricao.setColumns(20);
+        inpDescricao.setRows(5);
+        jScrollPane1.setViewportView(inpDescricao);
+
+        javax.swing.GroupLayout pnEmpresaLayout = new javax.swing.GroupLayout(pnEmpresa);
+        pnEmpresa.setLayout(pnEmpresaLayout);
+        pnEmpresaLayout.setHorizontalGroup(
+            pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnEmpresaLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnEmpresaLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(pnEmpresaLayout.createSequentialGroup()
+                            .addGap(28, 28, 28)
+                            .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel4))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(inpEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(inpSenha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(inpCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnEmpresaLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(inpRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(inpNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+        pnEmpresaLayout.setVerticalGroup(
+            pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnEmpresaLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inpRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inpCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(inpEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(inpSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(137, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(31, 31, 31)
-                    .addComponent(jLabel3)
-                    .addContainerGap(241, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         bttnAtualizar.setText("Atualizar dados");
@@ -152,18 +204,18 @@ public class Home extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(201, 201, 201)
+                .addGap(216, 216, 216)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGap(21, 21, 21)
+                .addComponent(pnEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bttnAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bttnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bttnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+                .addGap(11, 11, 11))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,12 +226,12 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bttnAtualizar)
-                        .addGap(204, 204, 204)
-                        .addComponent(bttnLogout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bttnLogout)
+                        .addGap(18, 18, 18)
                         .addComponent(bttnApagar))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(pnEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,23 +239,29 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bttnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtualizarActionPerformed
-        String nome = this.inpNome.getText();
+        String razaoSocial = this.inpRazaoSocial.getText();
+        String cnpj = this.inpCnpj.getText();
+        String ramo = this.inpRamo.getText();
         String email = this.inpEmail.getText();
         String senha = this.inpSenha.getText();
+        String descricao = this.inpDescricao.getText();
         
         JSONObject request = new JSONObject();
         request.put("operacao", "atualizar"+this.usuario);
+        request.put("razaoSocial", razaoSocial);
+        request.put("cnpj", cnpj);
+        request.put("ramo", ramo);
         request.put("email", email);
         request.put("senha", senha);
-        request.put("nome", nome);
+        request.put("descricao", descricao);
         
         String response = this.clientApp.callServer(request);
         JSONObject responseJson = new JSONObject(response);
         
         if(responseJson.getInt("status") == 201){
-            JOptionPane.showMessageDialog(Home.this, "Usuario atualizado com sucesso!", "Sucesso Atualizar Usuario", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(HomeEmpresa.this, "Usuario atualizado com sucesso!", "Sucesso Atualizar Usuario", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(Home.this, responseJson.getString("mensagem"), "Erro Atualizar Usuario", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(HomeEmpresa.this, responseJson.getString("mensagem"), "Erro Atualizar Usuario", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_bttnAtualizarActionPerformed
@@ -220,13 +278,13 @@ public class Home extends javax.swing.JFrame {
             new Login(this.clientApp).setVisible(true);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(Home.this, responseJson.getString("mensagem"), "Erro Logout", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(HomeEmpresa.this, responseJson.getString("mensagem"), "Erro Logout", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bttnLogoutActionPerformed
 
-    private void inpNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNomeActionPerformed
+    private void inpRazaoSocialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpRazaoSocialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inpNomeActionPerformed
+    }//GEN-LAST:event_inpRazaoSocialActionPerformed
 
     private void inpEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpEmailActionPerformed
         // TODO add your handling code here:
@@ -249,24 +307,35 @@ public class Home extends javax.swing.JFrame {
             new Login(this.clientApp).setVisible(true);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(Home.this, responseJson.getString("mensagem"), "Erro Apagar Usuario", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(HomeEmpresa.this, responseJson.getString("mensagem"), "Erro Apagar Usuario", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bttnApagarActionPerformed
 
+    private void inpCnpjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpCnpjActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpCnpjActionPerformed
+
+    private void inpRamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpRamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpRamoActionPerformed
+
     private void visualizarUsusario(String usuario, String email) {
         JSONObject request = new JSONObject();
-
+        
         request.put("operacao", "visualizar" + usuario);
         request.put("email", email);
 
         String response = this.clientApp.callServer(request);
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {
-            this.inpNome.setText(responseJson.getString("nome"));
+            this.inpRazaoSocial.setText(responseJson.getString("razaoSocial"));
+            this.inpCnpj.setText(responseJson.getString("cnpj"));
+            this.inpRamo.setText(responseJson.getString("ramo"));
             this.inpEmail.setText(email);
             this.inpSenha.setText(responseJson.getString("senha"));
+            this.inpDescricao.setText(responseJson.getString("descricao"));
         } else {
-            JOptionPane.showMessageDialog(Home.this, responseJson.getString("mensagem"), "Erro Visualizar Usuario", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(HomeEmpresa.this, responseJson.getString("mensagem"), "Erro Visualizar Usuario", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -274,13 +343,20 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JToggleButton bttnApagar;
     private javax.swing.JToggleButton bttnAtualizar;
     private javax.swing.JToggleButton bttnLogout;
+    private javax.swing.JTextField inpCnpj;
+    private javax.swing.JTextArea inpDescricao;
     private javax.swing.JTextField inpEmail;
-    private javax.swing.JTextField inpNome;
+    private javax.swing.JTextField inpRamo;
+    private javax.swing.JTextField inpRazaoSocial;
     private javax.swing.JTextField inpSenha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnEmpresa;
     // End of variables declaration//GEN-END:variables
 }

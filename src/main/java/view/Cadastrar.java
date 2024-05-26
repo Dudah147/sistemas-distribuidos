@@ -13,7 +13,9 @@ import org.json.JSONObject;
  * @author dudam
  */
 public class Cadastrar extends javax.swing.JFrame {
+
     private ClientApp clientApp;
+
     /**
      * Creates new form Cadastrar
      */
@@ -35,6 +37,17 @@ public class Cadastrar extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         pnEmpresa = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        inpRazaoSocial = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        inpCnpj = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        inpEmailEmpresa = new javax.swing.JTextField();
+        inpSenhaEmpresa = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        inpDescricao = new javax.swing.JTextField();
+        inpRamo = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
         pnCandidato = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         inpNome = new javax.swing.JTextField();
@@ -52,21 +65,115 @@ public class Cadastrar extends javax.swing.JFrame {
 
         jLabel5.setText("Razão Social");
 
+        inpRazaoSocial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpRazaoSocialActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("CNPJ");
+
+        inpCnpj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpCnpjActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("E-mail");
+
+        inpEmailEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpEmailEmpresaActionPerformed(evt);
+            }
+        });
+
+        inpSenhaEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpSenhaEmpresaActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Senha");
+
+        jLabel9.setText("Descricao");
+
+        inpDescricao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpDescricaoActionPerformed(evt);
+            }
+        });
+
+        inpRamo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpRamoActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Ramo");
+
         javax.swing.GroupLayout pnEmpresaLayout = new javax.swing.GroupLayout(pnEmpresa);
         pnEmpresa.setLayout(pnEmpresaLayout);
         pnEmpresaLayout.setHorizontalGroup(
             pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnEmpresaLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel5)
-                .addContainerGap(363, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
+                .addGap(0, 16, Short.MAX_VALUE)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnEmpresaLayout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addGap(20, 20, 20)
+                            .addComponent(inpSenhaEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addGap(18, 18, 18)
+                            .addComponent(inpEmailEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnEmpresaLayout.createSequentialGroup()
+                            .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel5))
+                            .addGap(18, 18, 18)
+                            .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(inpCnpj, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                                .addComponent(inpRazaoSocial)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addGap(18, 18, 18)
+                            .addComponent(inpDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnEmpresaLayout.createSequentialGroup()
+                            .addComponent(jLabel10)
+                            .addGap(18, 18, 18)
+                            .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(20, 20, 20))
         );
         pnEmpresaLayout.setVerticalGroup(
             pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnEmpresaLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel5)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(inpRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(inpCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(inpEmailEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(inpSenhaEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(inpDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(inpRamo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jLabel2.setText("Nome");
@@ -89,8 +196,8 @@ public class Cadastrar extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(27, 27, 27)
                         .addGroup(pnCandidatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(inpNome, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                            .addComponent(inpEmail)
+                            .addComponent(inpEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                            .addComponent(inpNome)
                             .addComponent(inpSenha))))
                 .addGap(0, 34, Short.MAX_VALUE))
         );
@@ -100,11 +207,11 @@ public class Cadastrar extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(pnCandidatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(inpEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inpNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(pnCandidatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(inpNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inpEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(pnCandidatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -162,9 +269,9 @@ public class Cadastrar extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(60, Short.MAX_VALUE)
+                    .addContainerGap(58, Short.MAX_VALUE)
                     .addComponent(pnEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(56, Short.MAX_VALUE)))
+                    .addContainerGap(55, Short.MAX_VALUE)))
         );
 
         pack();
@@ -172,19 +279,37 @@ public class Cadastrar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bttnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnCadastrarActionPerformed
-        String nome = this.inpNome.getText();
-        String email = this.inpEmail.getText();
-        String senha = this.inpSenha.getText();
-        
         JSONObject request = new JSONObject();
-        request.put("operacao", "cadastrarCandidato");
-        request.put("nome", nome);
-        request.put("email", email);
-        request.put("senha", senha);
+        if (this.cbUsuario.getSelectedItem().equals("Candidato")) {
+            String nome = this.inpNome.getText();
+            String email = this.inpEmail.getText();
+            String senha = this.inpSenha.getText();
+
+            request.put("operacao", "cadastrarCandidato");
+            request.put("nome", nome);
+            request.put("email", email);
+            request.put("senha", senha);
+
+        } else {
+            String razaoSocial = this.inpRazaoSocial.getText();
+            String cnpj = this.inpCnpj.getText();
+            String email = this.inpEmailEmpresa.getText();
+            String senha = this.inpSenhaEmpresa.getText();
+            String descricao = this.inpDescricao.getText();
+            String ramo = this.inpRamo.getText();
+
+            request.put("operacao", "cadastrarEmpresa");
+            request.put("razaoSocial", razaoSocial);
+            request.put("cnpj", cnpj);
+            request.put("email", email);
+            request.put("senha", senha);
+            request.put("descricao", descricao);
+            request.put("ramo", ramo);
+        }
+        
         String response = this.clientApp.callServer(request);
         JSONObject responseJson = new JSONObject(response);
-        
-        if(responseJson.getInt("status") == 201){
+        if (responseJson.getInt("status") == 201) {
             new Login(this.clientApp).setVisible(true);
             dispose();
         } else {
@@ -195,9 +320,33 @@ public class Cadastrar extends javax.swing.JFrame {
     private void cbUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbUsuarioActionPerformed
         this.selecionarUsuario();
     }//GEN-LAST:event_cbUsuarioActionPerformed
-    
-    private void selecionarUsuario(){
-        if(this.cbUsuario.getSelectedItem().equals("Candidato")){
+
+    private void inpRazaoSocialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpRazaoSocialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpRazaoSocialActionPerformed
+
+    private void inpCnpjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpCnpjActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpCnpjActionPerformed
+
+    private void inpEmailEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpEmailEmpresaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpEmailEmpresaActionPerformed
+
+    private void inpSenhaEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpSenhaEmpresaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpSenhaEmpresaActionPerformed
+
+    private void inpDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpDescricaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpDescricaoActionPerformed
+
+    private void inpRamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpRamoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpRamoActionPerformed
+
+    private void selecionarUsuario() {
+        if (this.cbUsuario.getSelectedItem().equals("Candidato")) {
             this.pnCandidato.setVisible(true);
             this.pnEmpresa.setVisible(false);
         } else {
@@ -209,14 +358,25 @@ public class Cadastrar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bttnCadastrar;
     private javax.swing.JComboBox<String> cbUsuario;
+    private javax.swing.JTextField inpCnpj;
+    private javax.swing.JTextField inpDescricao;
     private javax.swing.JTextField inpEmail;
+    private javax.swing.JTextField inpEmailEmpresa;
     private javax.swing.JTextField inpNome;
+    private javax.swing.JTextField inpRamo;
+    private javax.swing.JTextField inpRazaoSocial;
     private javax.swing.JTextField inpSenha;
+    private javax.swing.JTextField inpSenhaEmpresa;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel pnCandidato;
     private javax.swing.JPanel pnEmpresa;
     // End of variables declaration//GEN-END:variables
