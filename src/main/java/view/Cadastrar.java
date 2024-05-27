@@ -311,8 +311,12 @@ public class Cadastrar extends javax.swing.JFrame {
             request.put("descricao", descricao);
             request.put("ramo", ramo);
         }
-        
+
         String response = this.clientApp.callServer(request);
+        if (response == null) {
+            JOptionPane.showMessageDialog(Cadastrar.this, "Resposta não recebida", "Erro Cadastrar Candidato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {
             new Login(this.clientApp).setVisible(true);

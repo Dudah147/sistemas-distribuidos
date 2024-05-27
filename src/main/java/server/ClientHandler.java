@@ -38,6 +38,7 @@ public class ClientHandler extends Thread {
                 }
                 System.out.println("Recebido do cliente: " + line);
                 String response = routes.handleRequest(line);
+                System.out.println(response);
                 out.println(response);
             }
         } catch (IOException e) {
