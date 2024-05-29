@@ -313,6 +313,7 @@ public class Cadastrar extends javax.swing.JFrame {
         }
 
         String response = this.clientApp.callServer(request);
+        System.out.println(response);
         if (response == null) {
             JOptionPane.showMessageDialog(Cadastrar.this, "Resposta não recebida", "Erro Cadastrar Candidato", JOptionPane.ERROR_MESSAGE);
             return;

@@ -190,33 +190,37 @@ public class HomeCandidato extends javax.swing.JFrame {
         String nome = this.inpNome.getText();
         String email = this.inpEmail.getText();
         String senha = this.inpSenha.getText();
-        
+
         JSONObject request = new JSONObject();
-        request.put("operacao", "atualizar"+this.usuario);
+        request.put("operacao", "atualizar" + this.usuario);
         request.put("email", email);
         request.put("senha", senha);
         request.put("nome", nome);
-        
+
         String response = this.clientApp.callServer(request);
+        System.out.println(response);
+
         JSONObject responseJson = new JSONObject(response);
-        
-        if(responseJson.getInt("status") == 201){
+
+        if (responseJson.getInt("status") == 201) {
             JOptionPane.showMessageDialog(HomeCandidato.this, "Usuario atualizado com sucesso!", "Sucesso Atualizar Usuario", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(HomeCandidato.this, responseJson.getString("mensagem"), "Erro Atualizar Usuario", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_bttnAtualizarActionPerformed
 
     private void bttnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnLogoutActionPerformed
         JSONObject request = new JSONObject();
         request.put("operacao", "logout");
         request.put("token", this.token);
-        
+
         String response = this.clientApp.callServer(request);
+        System.out.println(response);
+
         JSONObject responseJson = new JSONObject(response);
-        
-        if(responseJson.getInt("status") == 204){
+
+        if (responseJson.getInt("status") == 204) {
             new Login(this.clientApp).setVisible(true);
             dispose();
         } else {
@@ -241,10 +245,10 @@ public class HomeCandidato extends javax.swing.JFrame {
 
         request.put("operacao", "apagar" + this.usuario);
         request.put("email", this.inpEmail.getText());
-        
+
         String response = this.clientApp.callServer(request);
         JSONObject responseJson = new JSONObject(response);
-        
+
         if (responseJson.getInt("status") == 201) {
             new Login(this.clientApp).setVisible(true);
             dispose();
@@ -255,11 +259,13 @@ public class HomeCandidato extends javax.swing.JFrame {
 
     private void visualizarUsusario(String usuario, String email) {
         JSONObject request = new JSONObject();
-        
+
         request.put("operacao", "visualizar" + usuario);
         request.put("email", email);
 
         String response = this.clientApp.callServer(request);
+        System.out.println(response);
+
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {
             this.inpNome.setText(responseJson.getString("nome"));
