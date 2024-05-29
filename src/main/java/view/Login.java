@@ -179,7 +179,13 @@ public class Login extends javax.swing.JFrame {
         request.put("senha", senha);
 
         String response = this.clientApp.callServer(request);
+        if (response == null) {
+            JOptionPane.showMessageDialog(Login.this, "Resposta não recebida", "Erro Cadastrar Candidato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        System.out.println("Recebido do Servidor: " + response);
         JSONObject json = new JSONObject(response);
+        
         if (json.getInt("status") == 200) {
             if(usuario.equals("Candidato")) new HomeCandidato(clientApp, usuario, email, json.getString("token")).setVisible(true);
             else new HomeEmpresa(clientApp, usuario, email, json.getString("token")).setVisible(true);
