@@ -17,15 +17,15 @@ public class HomeCandidato extends javax.swing.JFrame {
     private ClientApp clientApp;
     private String usuario;
     private String token;
+    private String email;
 
-    /**
-     * Creates new form Home
-     */
+
     public HomeCandidato(ClientApp clientApp, String usuario, String email, String token) {
         initComponents();
         this.clientApp = clientApp;
         this.usuario = usuario;
         this.token = token;
+        this.email = email;
         this.visualizarUsusario(usuario, email);
     }
 
@@ -49,6 +49,7 @@ public class HomeCandidato extends javax.swing.JFrame {
         bttnAtualizar = new javax.swing.JToggleButton();
         bttnLogout = new javax.swing.JToggleButton();
         bttnApagar = new javax.swing.JToggleButton();
+        btnCompetencias = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(null);
@@ -147,6 +148,13 @@ public class HomeCandidato extends javax.swing.JFrame {
             }
         });
 
+        btnCompetencias.setText("Competências");
+        btnCompetencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompetenciasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -162,7 +170,8 @@ public class HomeCandidato extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bttnAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bttnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bttnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bttnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCompetencias, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
@@ -174,6 +183,8 @@ public class HomeCandidato extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bttnAtualizar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCompetencias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bttnLogout)
                         .addGap(18, 18, 18)
@@ -188,17 +199,17 @@ public class HomeCandidato extends javax.swing.JFrame {
 
     private void bttnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtualizarActionPerformed
         String nome = this.inpNome.getText();
-        String email = this.inpEmail.getText();
         String senha = this.inpSenha.getText();
 
         JSONObject request = new JSONObject();
         request.put("operacao", "atualizar" + this.usuario);
-        request.put("email", email);
+        request.put("email", this.email);
         request.put("senha", senha);
         request.put("nome", nome);
+        request.put("token", token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -216,7 +227,7 @@ public class HomeCandidato extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -245,6 +256,7 @@ public class HomeCandidato extends javax.swing.JFrame {
 
         request.put("operacao", "apagar" + this.usuario);
         request.put("email", this.inpEmail.getText());
+        request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
         JSONObject responseJson = new JSONObject(response);
@@ -257,14 +269,20 @@ public class HomeCandidato extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bttnApagarActionPerformed
 
+    private void btnCompetenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompetenciasActionPerformed
+        new CompetenciaExperiencia(this.clientApp, this.token, this.email).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnCompetenciasActionPerformed
+
     private void visualizarUsusario(String usuario, String email) {
         JSONObject request = new JSONObject();
 
         request.put("operacao", "visualizar" + usuario);
         request.put("email", email);
+        request.put("token", token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {
@@ -277,6 +295,7 @@ public class HomeCandidato extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnCompetencias;
     private javax.swing.JToggleButton bttnApagar;
     private javax.swing.JToggleButton bttnAtualizar;
     private javax.swing.JToggleButton bttnLogout;

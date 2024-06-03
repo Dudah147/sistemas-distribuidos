@@ -256,9 +256,10 @@ public class HomeEmpresa extends javax.swing.JFrame {
         request.put("email", email);
         request.put("senha", senha);
         request.put("descricao", descricao);
+        request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -276,7 +277,7 @@ public class HomeEmpresa extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -305,9 +306,10 @@ public class HomeEmpresa extends javax.swing.JFrame {
 
         request.put("operacao", "apagar" + this.usuario);
         request.put("email", this.inpEmail.getText());
+        request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -332,9 +334,10 @@ public class HomeEmpresa extends javax.swing.JFrame {
 
         request.put("operacao", "visualizar" + usuario);
         request.put("email", email);
+        request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println(response);
+        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {

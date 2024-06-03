@@ -101,7 +101,7 @@ public class EmpresaController {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token");
         if (!hasKeys) {
             responseJson.put("operacao", "visualizarEmpresa");
             responseJson.put("status", 404);
@@ -113,6 +113,11 @@ public class EmpresaController {
         String response;
         //Valida email
         if (!(response = FormValidator.checkEmail(request, "visualizarEmpresa")).equals("OK")) {
+            return response;
+        }
+        
+        // Valida token
+        if(!(response = this.empresaDAO.validToken(request)).equals("OK")){
             return response;
         }
 
@@ -141,7 +146,7 @@ public class EmpresaController {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email", "razaoSocial", "senha", "cnpj", "descricao", "ramo");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "razaoSocial", "senha", "cnpj", "descricao", "ramo", "token");
         if (!hasKeys) {
             responseJson.put("operacao", "atualizarEmpresa");
             responseJson.put("status", 404);
@@ -163,6 +168,11 @@ public class EmpresaController {
 
         // Valida senha
         if (!(response = FormValidator.checkSenha(request, "atualizarEmpresa")).equals("OK")) {
+            return response;
+        }
+        
+        // Valida token
+        if(!(response = this.empresaDAO.validToken(request)).equals("OK")){
             return response;
         }
         
@@ -196,7 +206,7 @@ public class EmpresaController {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token");
         if (!hasKeys) {
             responseJson.put("operacao", "apagarEmpresa");
             responseJson.put("status", 404);
@@ -208,6 +218,11 @@ public class EmpresaController {
         String response;
         //Valida email
         if (!(response = FormValidator.checkEmail(request, "apagarEmpresa")).equals("OK")) {
+            return response;
+        }
+        
+        // Valida token
+        if(!(response = this.empresaDAO.validToken(request)).equals("OK")){
             return response;
         }
 

@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
+import org.json.JSONObject;
 
 /**
  *
@@ -114,5 +115,28 @@ public class EmpresaDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public String validToken(JSONObject request) {
+        String token = request.getString("token");
+        String email = request.getString("email");
+
+        String jpql = "SELECT c FROM LoginCandidato l "
+                + "LEFT JOIN l.candidato c "
+                + "WHERE l.token = :token AND c.email = :email";
+
+        TypedQuery<Empresa> query = this.entityManager.createQuery(jpql, Empresa.class);
+        query.setParameter("token", token);
+        query.setParameter("email", email);
+
+        if (query.getResultList().isEmpty()) {
+            JSONObject responseJson = new JSONObject();
+            responseJson.put("operacao", request.getString("operacao"));
+            responseJson.put("status", 404);
+            responseJson.put("mensagem", "Token inválido");
+
+            return responseJson.toString();
+        }
+        return "OK";
     }
 }

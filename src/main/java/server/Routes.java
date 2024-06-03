@@ -5,6 +5,7 @@
 package server;
 
 import controller.CandidatoController;
+import controller.CompetenciaExperienciaController;
 import controller.EmpresaController;
 import controller.LoginController;
 import jakarta.persistence.EntityManager;
@@ -16,14 +17,17 @@ import org.json.JSONObject;
  * @author dudam
  */
 public class Routes {
+
     private CandidatoController candidatoController;
     private LoginController loginController;
     private EmpresaController empresaController;
+    private CompetenciaExperienciaController competenciaExpController;
 
     public Routes(EntityManager em) {
         this.candidatoController = new CandidatoController(em);
         this.empresaController = new EmpresaController(em);
         this.loginController = new LoginController(em);
+        this.competenciaExpController = new CompetenciaExperienciaController(em);
     }
 
     public String handleRequest(String request) {
@@ -57,6 +61,17 @@ public class Routes {
                     this.loginController.loginEmpresa(requestJSON);
                 case "logout" ->
                     this.loginController.logout(requestJSON);
+
+                // --> Rotas para COMPETENCIA
+                case "cadastrarCompetenciaExperiencia" ->
+                    this.competenciaExpController.cadastrar(requestJSON);
+                case "visualizarCompetenciaExperiencia" ->
+                    this.competenciaExpController.visualizar(requestJSON);
+                case "atualizarCompetenciaExperiencia" ->
+                    this.competenciaExpController.atualizar(requestJSON);
+                case "apagarCompetenciaExperiencia" ->
+                    this.competenciaExpController.apagar(requestJSON);
+
                 default ->
                     "OPERACAO '" + requestJSON.getString("operacao") + "' NÃO ENCONTRADA";
             };

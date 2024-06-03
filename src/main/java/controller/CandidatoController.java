@@ -92,7 +92,7 @@ public class CandidatoController {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token");
         if (!hasKeys) {
             responseJson.put("operacao", "visualizarCandidato");
             responseJson.put("status", 404);
@@ -104,6 +104,11 @@ public class CandidatoController {
         String response;
         //Valida email
         if (!(response = FormValidator.checkEmail(request, "visualizarCandidato")).equals("OK")) {
+            return response;
+        }
+        
+        // Valida token
+        if(!(response = this.candidatoDAO.validToken(request)).equals("OK")){
             return response;
         }
 
@@ -129,7 +134,7 @@ public class CandidatoController {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email", "nome", "senha");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "nome", "senha", "token");
         if (!hasKeys) {
             responseJson.put("operacao", "atualizarCandidato");
             responseJson.put("status", 404);
@@ -153,6 +158,11 @@ public class CandidatoController {
         if (!(response = FormValidator.checkSenha(request, "atualizarCandidato")).equals("OK")) {
             return response;
         }
+        
+        // Valida token
+        if(!(response = this.candidatoDAO.validToken(request)).equals("OK")){
+            return response;
+        }
 
         // Envia dados ao banco
         boolean success = this.candidatoDAO.updateCandidato(request.getString("email"), request.getString("senha"), request.getString("nome"));
@@ -174,7 +184,7 @@ public class CandidatoController {
         JSONObject responseJson = new JSONObject();
 
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token");
         if (!hasKeys) {
             responseJson.put("operacao", "apagarCandidato");
             responseJson.put("status", 404);
@@ -186,6 +196,11 @@ public class CandidatoController {
         String response;
         //Valida email
         if (!(response = FormValidator.checkEmail(request, "apagarCandidato")).equals("OK")) {
+            return response;
+        }
+        
+        // Valida token
+        if(!(response = this.candidatoDAO.validToken(request)).equals("OK")){
             return response;
         }
         
