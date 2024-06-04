@@ -140,13 +140,123 @@ public class CompetenciaExperienciaController {
 
     public String apagar(JSONObject request) {
         JSONObject responseJson = new JSONObject();
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token", "competenciaExperiencia");
+        if (!hasKeys) {
+            responseJson.put("operacao", "apagarCompetenciaExperiencia");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Informe todos os campos");
 
-        return responseJson.toString();
+            return responseJson.toString();
+        }
+
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(request, "apagarCompetenciaExperiencia")).equals("OK")) {
+            return response;
+        }
+
+        // Valida token
+        if (!(response = this.candidatoDAO.validToken(request)).equals("OK")) {
+            return response;
+        }
+
+        // Validar se o email tem candidato
+        Candidato candidato = this.candidatoDAO.findCandidatoByEmail(request.getString("email"));
+
+        if (candidato == null) {
+            responseJson.put("operacao", "apagarCompetenciaExperiencia");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Candidato não encontrado");
+
+            return responseJson.toString();
+        }
+        // Apaga as competências
+        try {
+            JSONArray competenciasArray = request.getJSONArray("competenciaExperiencia");
+            String resp = this.competenciaExperienciaDAO.deleteCompetenciaExperiencia(competenciasArray, candidato);
+
+            if (!resp.equals("OK")) {
+                responseJson.put("operacao", "apagarCompetenciaExperiencia");
+                responseJson.put("status", 422);
+                responseJson.put("mensagem", resp);
+
+                return responseJson.toString();
+            }
+
+            responseJson.put("operacao", "apagarCompetenciaExperiencia");
+            responseJson.put("status", 201);
+            responseJson.put("mensagem", "Competencia/Experiencia apagada com sucesso");
+            return responseJson.toString();
+
+        } catch (Exception e) {
+            responseJson.put("operacao", "apagarCompetenciaExperiencia");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Erro ao resgatar Competencias");
+
+            return responseJson.toString();
+        }
+        
     }
 
     public String atualizar(JSONObject request) {
         JSONObject responseJson = new JSONObject();
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token", "competenciaExperiencia");
+        if (!hasKeys) {
+            responseJson.put("operacao", "atualizarCompetenciaExperiencia");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Informe todos os campos");
 
-        return responseJson.toString();
+            return responseJson.toString();
+        }
+
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(request, "atualizarCompetenciaExperiencia")).equals("OK")) {
+            return response;
+        }
+
+        // Valida token
+        if (!(response = this.candidatoDAO.validToken(request)).equals("OK")) {
+            return response;
+        }
+
+        // Validar se o email tem candidato
+        Candidato candidato = this.candidatoDAO.findCandidatoByEmail(request.getString("email"));
+
+        if (candidato == null) {
+            responseJson.put("operacao", "atualizarCompetenciaExperiencia");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Candidato não encontrado");
+
+            return responseJson.toString();
+        }
+
+        // Atualiza as competências
+        try {
+            JSONArray competenciasArray = request.getJSONArray("competenciaExperiencia");
+            String resp = this.competenciaExperienciaDAO.updateCompetenciaExperiencia(competenciasArray, candidato);
+
+            if (!resp.equals("OK")) {
+                responseJson.put("operacao", "atualizarCompetenciaExperiencia");
+                responseJson.put("status", 422);
+                responseJson.put("mensagem", resp);
+
+                return responseJson.toString();
+            }
+
+            responseJson.put("operacao", "atualizarCompetenciaExperiencia");
+            responseJson.put("status", 201);
+            responseJson.put("mensagem", "Competencia/Experiencia atualizada com sucesso");
+            return responseJson.toString();
+
+        } catch (Exception e) {
+            responseJson.put("operacao", "atualizarCompetenciaExperiencia");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Erro ao resgatar Competencias");
+
+            return responseJson.toString();
+        }
     }
 }

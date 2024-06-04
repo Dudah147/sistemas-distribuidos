@@ -37,6 +37,7 @@
                   <Component id="bttnAtualizar" max="32767" attributes="0"/>
                   <Component id="bttnLogout" max="32767" attributes="0"/>
                   <Component id="bttnApagar" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnVagas" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
           </Group>
@@ -51,6 +52,8 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="bttnAtualizar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnVagas" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="bttnLogout" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -267,6 +270,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bttnApagarActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnVagas">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Vagas"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

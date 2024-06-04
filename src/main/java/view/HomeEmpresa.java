@@ -56,6 +56,7 @@ public class HomeEmpresa extends javax.swing.JFrame {
         bttnAtualizar = new javax.swing.JToggleButton();
         bttnLogout = new javax.swing.JToggleButton();
         bttnApagar = new javax.swing.JToggleButton();
+        btnVagas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -201,6 +202,8 @@ public class HomeEmpresa extends javax.swing.JFrame {
             }
         });
 
+        btnVagas.setText("Vagas");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -216,7 +219,8 @@ public class HomeEmpresa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bttnAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bttnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bttnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bttnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVagas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(11, 11, 11))
         );
         layout.setVerticalGroup(
@@ -228,6 +232,8 @@ public class HomeEmpresa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bttnAtualizar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnVagas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bttnLogout)
                         .addGap(18, 18, 18)
@@ -353,6 +359,7 @@ public class HomeEmpresa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnVagas;
     private javax.swing.JToggleButton bttnApagar;
     private javax.swing.JToggleButton bttnAtualizar;
     private javax.swing.JToggleButton bttnLogout;

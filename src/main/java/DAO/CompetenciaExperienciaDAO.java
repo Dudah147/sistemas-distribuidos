@@ -33,8 +33,8 @@ public class CompetenciaExperienciaDAO {
 
         try {
             TypedQuery<CompetenciaExperienciaDTO> query = this.entityManager.createQuery(
-                "SELECT new CompetenciaExperienciaDTO(ce.competencia, ce.experiencia) FROM CompetenciaExperiencia ce WHERE ce.candidato = :candidato",
-                CompetenciaExperienciaDTO.class
+                    "SELECT new CompetenciaExperienciaDTO(ce.competencia, ce.experiencia) FROM CompetenciaExperiencia ce WHERE ce.candidato = :candidato",
+                    CompetenciaExperienciaDTO.class
             );
             query.setParameter("candidato", candidato);
             return query.getResultList();
@@ -43,12 +43,48 @@ public class CompetenciaExperienciaDAO {
         }
     }
 
+    public List<String> findCompetenciaCandidatoByCandidato(Candidato candidato) {
+
+        try {
+            TypedQuery<String> query = this.entityManager.createQuery(
+                    "SELECT ce.competencia FROM CompetenciaExperiencia ce WHERE ce.candidato = :candidato",
+                    String.class
+            );
+            query.setParameter("candidato", candidato);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public CompetenciaExperiencia findCompetenciaExperienciaByCompetencia(Candidato candidato, String competencia) {
+        try {
+            TypedQuery<CompetenciaExperiencia> query = this.entityManager.createQuery(
+                    "SELECT ce FROM CompetenciaExperiencia ce WHERE ce.candidato = :candidato AND ce.competencia = :competencia",
+                    CompetenciaExperiencia.class
+            );
+            query.setParameter("candidato", candidato);
+            query.setParameter("competencia", competencia);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public String createCompetenciaExperiencia(JSONArray competenciasArray, Candidato candidato) {
+        List<String> comp = this.findCompetenciaCandidatoByCandidato(candidato);
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
             for (int i = 0; i < competenciasArray.length(); i++) {
                 JSONObject competenciaJSON = competenciasArray.getJSONObject(i);
+                if (comp.contains(competenciaJSON.getString("competencia"))) {
+                    // Atualiza experiência
+                    CompetenciaExperiencia cexp = this.findCompetenciaExperienciaByCompetencia(candidato, competenciaJSON.getString("competencia"));
+                    cexp.setExperiencia(competenciaJSON.getInt("experiencia"));
+                    entityManager.merge(cexp);
+                    continue;
+                }
                 CompetenciaExperiencia compExp = new CompetenciaExperiencia();
                 compExp.setCandidato(candidato);
                 compExp.setExperiencia(competenciaJSON.getInt("experiencia"));
@@ -67,4 +103,58 @@ public class CompetenciaExperienciaDAO {
             return ex.getMessage();
         }
     }
+
+    public String updateCompetenciaExperiencia(JSONArray competenciasArray, Candidato candidato) {
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            for (int i = 0; i < competenciasArray.length(); i++) {
+                JSONObject competenciaJSON = competenciasArray.getJSONObject(i);
+                CompetenciaExperiencia cexp = this.findCompetenciaExperienciaByCompetencia(candidato, competenciaJSON.getString("competencia"));
+                if (cexp == null) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+                    return "Competencia '" + competenciaJSON.getString("competencia") + "' não encontrada";
+                }
+                cexp.setExperiencia(competenciaJSON.getInt("experiencia"));
+                entityManager.merge(cexp);
+            }
+            transaction.commit();
+            return "OK";
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            return ex.getMessage();
+        }
+    }
+
+    public String deleteCompetenciaExperiencia(JSONArray competenciasArray, Candidato candidato) {
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            for (int i = 0; i < competenciasArray.length(); i++) {
+                JSONObject competenciaJSON = competenciasArray.getJSONObject(i);
+                CompetenciaExperiencia cexp = this.findCompetenciaExperienciaByCompetencia(candidato, competenciaJSON.getString("competencia"));
+                if (cexp == null) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+                    return "Competencia '" + competenciaJSON.getString("competencia") + "' não encontrada";
+                }
+                entityManager.remove(cexp);
+            }
+            transaction.commit();
+            return "OK";
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            return ex.getMessage();
+        }
+    }
+
 }

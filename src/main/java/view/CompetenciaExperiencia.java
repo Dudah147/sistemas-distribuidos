@@ -5,7 +5,11 @@
 package view;
 
 import client.ClientApp;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,13 +23,18 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
     private ClientApp clientApp;
     private String token;
     private String email;
+    private JSONArray editCells;
+    private JSONArray removeCells;
+    private boolean flag;
 
     public CompetenciaExperiencia(ClientApp clientApp, String token, String email) {
         this.clientApp = clientApp;
         this.token = token;
         this.email = email;
         initComponents();
+        this.tblCompetenciaExperiencia.setVisible(true);
         this.visualizarCompetenciaExperiencia();
+        this.flag = false;
     }
 
     /**
@@ -43,11 +52,15 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
         btnCadastrar = new javax.swing.JButton();
         btnApagar = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
+        bttnAtualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Competências");
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         tblCompetenciaExperiencia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -72,7 +85,14 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblCompetenciaExperiencia.setColumnSelectionAllowed(true);
+        tblCompetenciaExperiencia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCompetenciaExperienciaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCompetenciaExperiencia);
+        tblCompetenciaExperiencia.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         btnCadastrar.setText("<html><center>"+"Cadastrar"+"<br>"+"Competência"+"</center></html>");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -81,12 +101,24 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
             }
         });
 
-        btnApagar.setText("<html><center>"+"Apagar"+"<br>"+"Competência"+"</center></html>");
+        btnApagar.setText("<html><center>"+"Apagar"+"<br>"+"Competências"+"</center></html>");
+        btnApagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApagarActionPerformed(evt);
+            }
+        });
 
         btnVoltar.setText("Voltar");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVoltarActionPerformed(evt);
+            }
+        });
+
+        bttnAtualizar.setText("<html><center>"+"Atualizar"+"<br>"+"Competências"+"</center></html>");
+        bttnAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnAtualizarActionPerformed(evt);
             }
         });
 
@@ -105,10 +137,11 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bttnAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
@@ -122,7 +155,9 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
+                        .addGap(40, 40, 40)
+                        .addComponent(bttnAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addComponent(btnApagar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(34, Short.MAX_VALUE))
@@ -133,7 +168,19 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        // TODO add your handling code here:
+        if (!flag) {
+            this.tblCompetenciaExperiencia.setVisible(false);
+            this.jScrollPane1.setViewportView(new CadastrarCompetenciaExperiencia(this.email, this.token, this.clientApp));
+            this.btnCadastrar.setText("<html>Visualizar<br>Competência</html>");
+            this.bttnAtualizar.setEnabled(false);
+            this.btnApagar.setEnabled(false);
+        } else {
+            this.tblCompetenciaExperiencia.setVisible(true);
+            this.jScrollPane1.setViewportView(this.tblCompetenciaExperiencia);
+            this.btnCadastrar.setText("<html>Cadastrar<br>Competência</html>");
+            this.visualizarCompetenciaExperiencia();
+        }
+        flag = !flag;
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -141,7 +188,78 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
+    private void bttnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAtualizarActionPerformed
+        if (this.editCells != null) {
+            JSONObject request = new JSONObject();
+            request.put("operacao", "atualizarCompetenciaExperiencia");
+            request.put("email", this.email);
+            request.put("token", this.token);
+            request.put("competenciaExperiencia", this.editCells);
+
+            String response = this.clientApp.callServer(request);
+            if (response == null) {
+                JOptionPane.showMessageDialog(CompetenciaExperiencia.this, "Resposta não recebida", "Erro ao Atualizar competência", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            System.out.println("Recebido do Servidor: " + response);
+            JSONObject responseJSON = new JSONObject(response);
+
+            if (responseJSON.getInt("status") == 201) {
+                this.editCells = null;
+                JOptionPane.showMessageDialog(CompetenciaExperiencia.this, responseJSON.getString("mensagem"), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(CompetenciaExperiencia.this, responseJSON.getString("mensagem"), "Erro Atualizar Competencia Experiencia", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_bttnAtualizarActionPerformed
+
+    private void tblCompetenciaExperienciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCompetenciaExperienciaMouseClicked
+        DefaultTableModel tblModel = (DefaultTableModel) this.tblCompetenciaExperiencia.getModel();
+        int row = this.tblCompetenciaExperiencia.getSelectedRow();
+        Object exp = tblModel.getValueAt(row, 1);
+        Object comp = tblModel.getValueAt(row, 0);
+        if (this.removeCells == null) {
+            this.removeCells = new JSONArray();
+        }
+
+        JSONObject newCell = new JSONObject();
+        newCell.put("competencia", comp);
+        newCell.put("experiencia", Integer.parseInt(exp.toString()));
+        btnApagar.setEnabled(true);
+
+        this.removeCells.put(newCell);
+    }//GEN-LAST:event_tblCompetenciaExperienciaMouseClicked
+
+    private void btnApagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarActionPerformed
+        if (this.removeCells != null) {
+            JSONObject request = new JSONObject();
+            request.put("operacao", "apagarCompetenciaExperiencia");
+            request.put("email", this.email);
+            request.put("token", this.token);
+            request.put("competenciaExperiencia", this.removeCells);
+
+            String response = this.clientApp.callServer(request);
+            if (response == null) {
+                JOptionPane.showMessageDialog(CompetenciaExperiencia.this, "Resposta não recebida", "Erro ao Apagar competência", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            System.out.println("Recebido do Servidor: " + response);
+            JSONObject responseJSON = new JSONObject(response);
+
+            if (responseJSON.getInt("status") == 201) {
+                JOptionPane.showMessageDialog(CompetenciaExperiencia.this, responseJSON.getString("mensagem"), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                this.visualizarCompetenciaExperiencia();
+            } else {
+                JOptionPane.showMessageDialog(CompetenciaExperiencia.this, responseJSON.getString("mensagem"), "Erro Apagar Competencia Experiencia", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnApagarActionPerformed
+
     private void visualizarCompetenciaExperiencia() {
+        this.editCells = null;
+        this.removeCells = null;
+        this.bttnAtualizar.setEnabled(false);
+        this.btnApagar.setEnabled(false);
         JSONObject request = new JSONObject();
         request.put("operacao", "visualizarCompetenciaExperiencia");
         request.put("email", this.email);
@@ -157,6 +275,7 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
 
         if (responseJSON.getInt("status") == 201) {
             DefaultTableModel tblModel = (DefaultTableModel) this.tblCompetenciaExperiencia.getModel();
+            tblModel.setRowCount(0);
             JSONArray competenciaExperienciaArray = responseJSON.getJSONArray("competenciaExperiencia");
             if (competenciaExperienciaArray.length() == 0) {
                 return;
@@ -168,6 +287,27 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
                 int experiencia = competenciaObj.getInt("experiencia");
                 tblModel.addRow(new Object[]{competencia, experiencia});
             }
+
+            tblModel.addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    if (e.getType() == TableModelEvent.UPDATE) {
+                        int row = e.getFirstRow();
+                        Object exp = tblModel.getValueAt(row, 1);
+                        Object comp = tblModel.getValueAt(row, 0);
+
+                        if (editCells == null) {
+                            editCells = new JSONArray();
+                        }
+                        JSONObject newCell = new JSONObject();
+                        newCell.put("competencia", comp);
+                        newCell.put("experiencia", Integer.parseInt(exp.toString()));
+                        bttnAtualizar.setEnabled(true);
+
+                        editCells.put(newCell);
+                    }
+                }
+            });
         } else {
             JOptionPane.showMessageDialog(CompetenciaExperiencia.this, responseJSON.getString("mensagem"), "Erro ao visualizar competência", JOptionPane.ERROR_MESSAGE);
         }
@@ -178,6 +318,7 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
     private javax.swing.JButton btnApagar;
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.JButton bttnAtualizar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCompetenciaExperiencia;

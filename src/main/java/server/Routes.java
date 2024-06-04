@@ -8,6 +8,7 @@ import controller.CandidatoController;
 import controller.CompetenciaExperienciaController;
 import controller.EmpresaController;
 import controller.LoginController;
+import controller.VagaController;
 import jakarta.persistence.EntityManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,12 +23,14 @@ public class Routes {
     private LoginController loginController;
     private EmpresaController empresaController;
     private CompetenciaExperienciaController competenciaExpController;
+    private VagaController vagaController;
 
     public Routes(EntityManager em) {
         this.candidatoController = new CandidatoController(em);
         this.empresaController = new EmpresaController(em);
         this.loginController = new LoginController(em);
         this.competenciaExpController = new CompetenciaExperienciaController(em);
+        this.vagaController = new VagaController(em);
     }
 
     public String handleRequest(String request) {
@@ -71,6 +74,18 @@ public class Routes {
                     this.competenciaExpController.atualizar(requestJSON);
                 case "apagarCompetenciaExperiencia" ->
                     this.competenciaExpController.apagar(requestJSON);
+
+                // --> Rotas para VAGA
+                case "cadastrarVaga" ->
+                    this.vagaController.cadastrar(requestJSON);
+                case "visualizarVaga" ->
+                    this.vagaController.visualizar(requestJSON);
+                case "alterarVaga" ->
+                    this.vagaController.atualizar(requestJSON);
+                case "apagarVaga" ->
+                    this.vagaController.apagar(requestJSON);
+                case "listarVagas" ->
+                    this.vagaController.listarVagas(requestJSON);
 
                 default ->
                     "OPERACAO '" + requestJSON.getString("operacao") + "' NÃO ENCONTRADA";

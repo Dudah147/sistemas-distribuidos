@@ -121,8 +121,8 @@ public class EmpresaDAO {
         String token = request.getString("token");
         String email = request.getString("email");
 
-        String jpql = "SELECT c FROM LoginCandidato l "
-                + "LEFT JOIN l.candidato c "
+        String jpql = "SELECT c FROM LoginEmpresa l "
+                + "LEFT JOIN l.empresa c "
                 + "WHERE l.token = :token AND c.email = :email";
 
         TypedQuery<Empresa> query = this.entityManager.createQuery(jpql, Empresa.class);
