@@ -12,6 +12,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
+import org.json.JSONArray;
 
 /**
  *
@@ -43,6 +44,18 @@ public class VagaDAO {
                     "SELECT new ListarVagasDTO(v.idVaga, v.nome) FROM Vaga v WHERE v.empresa = :empresa", ListarVagasDTO.class
             );
             query.setParameter("empresa", empresa);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    public List<Vaga> filtrarVagasCandidato(String where){
+        try {
+            TypedQuery<Vaga> query = entityManager.createQuery(
+                    "SELECT v FROM Vaga v " + where, Vaga.class
+            );
+
             return query.getResultList();
         } catch (NoResultException e) {
             return null;

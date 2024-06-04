@@ -4,6 +4,7 @@
  */
 package controller;
 
+import DAO.CandidatoDAO;
 import DAO.EmpresaDAO;
 import DAO.VagaDAO;
 import entities.Empresa;
@@ -25,11 +26,13 @@ public class VagaController {
     private EntityManager em;
     private VagaDAO vagaDAO;
     private EmpresaDAO empresaDAO;
+    private CandidatoDAO candidatoDAO;
 
     public VagaController(EntityManager em) {
         this.em = em;
         this.vagaDAO = new VagaDAO(em);
         this.empresaDAO = new EmpresaDAO(em);
+        this.candidatoDAO = new CandidatoDAO(em);
     }
 
     public String cadastrar(JSONObject request) {
@@ -337,29 +340,89 @@ public class VagaController {
         }
     }
 
-   public String filtrarVagas(JSONObject request){
-       JSONObject responseJson = new JSONObject();
+    public String filtrarVagas(JSONObject request) {
+        JSONObject responseJson = new JSONObject();
         // Valida se informou todas as keys
-        boolean hasKeys = FormValidator.checkKeys(request, "email", "token");
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token", "filtros");
         if (!hasKeys) {
-            responseJson.put("operacao", "listarVagas");
+            responseJson.put("operacao", "filtrarVagas");
             responseJson.put("status", 422);
             responseJson.put("mensagem", "Informe todos os campos");
+
+            return responseJson.toString();
+        }
+        // Valida se informou todas as keys do filtros
+        JSONObject filtros = request.getJSONObject("filtros");
+        hasKeys = FormValidator.checkKeys(filtros, "competencias", "tipo");
+        if (!hasKeys) {
+            responseJson.put("operacao", "filtrarVagas");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Informe todos os campos do objeto filtros");
 
             return responseJson.toString();
         }
 
         String response;
         //Valida email
-        if (!(response = FormValidator.checkEmail(request, "listarVagas")).equals("OK")) {
+        if (!(response = FormValidator.checkEmail(request, "filtrarVagas")).equals("OK")) {
             return response;
         }
 
         // Valida token
-        if (!(response = this.empresaDAO.validToken(request)).equals("OK")) {
+        if (!(response = this.candidatoDAO.validToken(request)).equals("OK")) {
             return response;
         }
-       
-       return "OK";
-   }
+        String tipo = filtros.getString("tipo");
+        if (!tipo.equals("OR") && !tipo.equals("AND")) {
+            responseJson.put("operacao", "filtrarVagas");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Tipo tem que ser OR ou AND");
+            return responseJson.toString();
+        }
+
+        try {
+            String where = "WHERE 1=1 ";
+
+            JSONArray competencias = filtros.getJSONArray("competencias");
+            for (int i = 0; i < competencias.length(); i++) {
+                String comp = competencias.getString(i);
+                where = where + tipo +" v.competencias LIKE \"%" + comp + "%\" ";
+            }
+            
+            List<Vaga> resp = this.vagaDAO.filtrarVagasCandidato(where);
+            if (resp == null) {
+                responseJson.put("operacao", "filtrarVagas");
+                responseJson.put("status", 201);
+                responseJson.put("vagas", new JSONArray());
+                return responseJson.toString();
+            }
+            
+            JSONArray newArray = new JSONArray();
+            for(Vaga vaga: resp){
+                JSONObject newObj = new JSONObject();
+                newObj.put("estado", vaga.getEstado());
+                newObj.put("idVaga", vaga.getIdVaga());
+                newObj.put("nome", vaga.getNome());
+                newObj.put("email", vaga.getEmpresa().getEmail());
+                newObj.put("competencias", vaga.getCompetencias());
+                newObj.put("faixaSalarial", vaga.getFaixaSalarial());
+                newObj.put("descricao", vaga.getDescricao());
+                
+                newArray.put(newObj);
+            }
+
+            responseJson.put("operacao", "filtrarVagas");
+            responseJson.put("status", 201);
+            responseJson.put("vagas", newArray);
+
+            return responseJson.toString();
+        } catch (Exception ex) {
+            responseJson.put("operacao", "filtrarVagas");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Erro ao tentar Filtrar Vagas: " + ex.getMessage());
+
+            return responseJson.toString();
+        }
+
+    }
 }

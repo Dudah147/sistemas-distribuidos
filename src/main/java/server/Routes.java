@@ -92,6 +92,7 @@ public class Routes {
                     "OPERACAO '" + requestJSON.getString("operacao") + "' NÃO ENCONTRADA";
             };
         } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
             return "Chave 'operacao' não encontrada";
         }
     }
