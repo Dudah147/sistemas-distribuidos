@@ -275,6 +275,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Vagas"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVagasActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

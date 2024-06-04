@@ -17,6 +17,7 @@ public class HomeEmpresa extends javax.swing.JFrame {
     private ClientApp clientApp;
     private String usuario;
     private String token;
+    private String email;
 
     /**
      * Creates new form Home
@@ -26,6 +27,7 @@ public class HomeEmpresa extends javax.swing.JFrame {
         this.clientApp = clientApp;
         this.usuario = usuario;
         this.token = token;
+        this.email = email;
         this.visualizarUsusario(usuario, email);
     }
 
@@ -203,6 +205,11 @@ public class HomeEmpresa extends javax.swing.JFrame {
         });
 
         btnVagas.setText("Vagas");
+        btnVagas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVagasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -265,7 +272,6 @@ public class HomeEmpresa extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -283,7 +289,6 @@ public class HomeEmpresa extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -315,7 +320,6 @@ public class HomeEmpresa extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -335,6 +339,11 @@ public class HomeEmpresa extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inpRamoActionPerformed
 
+    private void btnVagasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVagasActionPerformed
+        new Vaga(this.clientApp, "Empresa", this.email, this.token).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVagasActionPerformed
+
     private void visualizarUsusario(String usuario, String email) {
         JSONObject request = new JSONObject();
 
@@ -343,7 +352,6 @@ public class HomeEmpresa extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {

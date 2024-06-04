@@ -38,8 +38,11 @@ public class ClientApp {
 
     public String callServer(JSONObject request) {
         try {
+            System.out.println("Enviado: " + request.toString());
             out.println(request.toString());
-            return this.in.readLine();
+            String response = this.in.readLine();
+            System.out.println("Recebido do Servidor: " + response);
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
             return "Erro na comunicação com o servidor";

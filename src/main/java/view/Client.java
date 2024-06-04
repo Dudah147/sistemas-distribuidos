@@ -39,6 +39,7 @@ public class Client extends javax.swing.JFrame {
 
         jLabel1.setText("IP do servidor");
 
+        inpIP.setText("localhost");
         inpIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inpIPActionPerformed(evt);

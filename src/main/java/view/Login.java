@@ -66,6 +66,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel5.setText("E-mail");
 
+        inpEmail.setText("empresa@email.com");
         inpEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inpEmailActionPerformed(evt);
@@ -74,6 +75,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("Senha");
 
+        inpSenha.setText("senha123");
         inpSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inpSenhaActionPerformed(evt);
@@ -183,7 +185,6 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(Login.this, "Resposta não recebida", "Erro Cadastrar Candidato", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        System.out.println("Recebido do Servidor: " + response);
         JSONObject json = new JSONObject(response);
         
         if (json.getInt("status") == 200) {

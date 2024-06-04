@@ -9,6 +9,8 @@ import DAO.VagaDAO;
 import entities.Empresa;
 import entities.Vaga;
 import helpers.FormValidator;
+import helpers.Formater;
+import helpers.ListarVagasDTO;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.json.JSONArray;
@@ -67,7 +69,7 @@ public class VagaController {
         // Cadastra a vaga
         try {
             JSONArray competenciasArray = request.getJSONArray("competencias");
-            String competencias = this.convertJSONArrayToString(competenciasArray);
+            String competencias = Formater.convertJSONArrayToString(competenciasArray);
 
             Vaga newVaga = new Vaga();
             newVaga.setCompetencias(competencias);
@@ -137,7 +139,7 @@ public class VagaController {
                 return responseJson.toString();
             }
 
-            JSONArray competencias = this.convertStringToJSONArray(vaga.getCompetencias());
+            JSONArray competencias = Formater.convertStringToJSONArray(vaga.getCompetencias());
 
             responseJson.put("operacao", "visualizarVagaVaga");
             responseJson.put("status", 201);
@@ -194,7 +196,9 @@ public class VagaController {
 
         // Envia dados ao banco
         try {
-            String resp = this.vagaDAO.updateVaga(request.getInt("idVaga"), empresa, request.getString("nome"), request.getString("descricao"), request.getString("estado"), request.getFloat("faixaSalarial"));
+            JSONArray competenciasArray = request.getJSONArray("competencias");
+            String competencias = Formater.convertJSONArrayToString(competenciasArray);
+            String resp = this.vagaDAO.updateVaga(request.getInt("idVaga"), empresa, request.getString("nome"), request.getString("descricao"), request.getString("estado"), request.getFloat("faixaSalarial"), competencias);
 
             if (!resp.equals("OK")) {
                 responseJson.put("operacao", "atualizarVaga");
@@ -311,7 +315,7 @@ public class VagaController {
         }
 
         try {
-            List<Vaga> resp = this.vagaDAO.findVagasByEmpresa(empresa);
+            List<ListarVagasDTO> resp = this.vagaDAO.findVagasByEmpresa(empresa);
             if (resp == null) {
                 responseJson.put("operacao", "listarVagas");
                 responseJson.put("status", 201);
@@ -333,30 +337,29 @@ public class VagaController {
         }
     }
 
-    public String convertJSONArrayToString(JSONArray jsonArray) {
-        StringBuilder sb = new StringBuilder();
+   public String filtrarVagas(JSONObject request){
+       JSONObject responseJson = new JSONObject();
+        // Valida se informou todas as keys
+        boolean hasKeys = FormValidator.checkKeys(request, "email", "token");
+        if (!hasKeys) {
+            responseJson.put("operacao", "listarVagas");
+            responseJson.put("status", 422);
+            responseJson.put("mensagem", "Informe todos os campos");
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            sb.append(jsonArray.getString(i));
-            if (i < jsonArray.length() - 1) {
-                sb.append(", ");
-            }
+            return responseJson.toString();
         }
 
-        return sb.toString();
-    }
-
-    public JSONArray convertStringToJSONArray(String input) {
-        JSONArray jsonArray = new JSONArray();
-
-        // Dividir a string por ", "
-        String[] items = input.split(", ");
-
-        // Adicionar cada item ao JSONArray
-        for (String item : items) {
-            jsonArray.put(item);
+        String response;
+        //Valida email
+        if (!(response = FormValidator.checkEmail(request, "listarVagas")).equals("OK")) {
+            return response;
         }
 
-        return jsonArray;
-    }
+        // Valida token
+        if (!(response = this.empresaDAO.validToken(request)).equals("OK")) {
+            return response;
+        }
+       
+       return "OK";
+   }
 }

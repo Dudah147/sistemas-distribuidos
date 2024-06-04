@@ -209,7 +209,6 @@ public class HomeCandidato extends javax.swing.JFrame {
         request.put("token", token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -227,7 +226,6 @@ public class HomeCandidato extends javax.swing.JFrame {
         request.put("token", this.token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
 
@@ -282,7 +280,6 @@ public class HomeCandidato extends javax.swing.JFrame {
         request.put("token", token);
 
         String response = this.clientApp.callServer(request);
-        System.out.println("Recebido do Servidor: " + response);
 
         JSONObject responseJson = new JSONObject(response);
         if (responseJson.getInt("status") == 201) {

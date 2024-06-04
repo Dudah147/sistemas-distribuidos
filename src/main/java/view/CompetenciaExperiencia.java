@@ -201,7 +201,6 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(CompetenciaExperiencia.this, "Resposta não recebida", "Erro ao Atualizar competência", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            System.out.println("Recebido do Servidor: " + response);
             JSONObject responseJSON = new JSONObject(response);
 
             if (responseJSON.getInt("status") == 201) {
@@ -243,7 +242,6 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(CompetenciaExperiencia.this, "Resposta não recebida", "Erro ao Apagar competência", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            System.out.println("Recebido do Servidor: " + response);
             JSONObject responseJSON = new JSONObject(response);
 
             if (responseJSON.getInt("status") == 201) {
@@ -270,7 +268,6 @@ public class CompetenciaExperiencia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(CompetenciaExperiencia.this, "Resposta não recebida", "Erro ao visualizar competência", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        System.out.println("Recebido do Servidor: " + response);
         JSONObject responseJSON = new JSONObject(response);
 
         if (responseJSON.getInt("status") == 201) {

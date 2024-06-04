@@ -166,7 +166,6 @@ public class CadastrarCompetenciaExperiencia extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(CadastrarCompetenciaExperiencia.this, "Resposta não recebida", "Erro Cadastrar Competencia Experiencia", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        System.out.println("Recebido do Servidor: " + response);
         JSONObject json = new JSONObject(response);
         
         if (json.getInt("status") == 201) {

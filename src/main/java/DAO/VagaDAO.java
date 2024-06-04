@@ -6,6 +6,7 @@ package DAO;
 
 import entities.Empresa;
 import entities.Vaga;
+import helpers.ListarVagasDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
@@ -36,10 +37,10 @@ public class VagaDAO {
         }
     }
     
-    public List<Vaga> findVagasByEmpresa(Empresa empresa) {
+    public List<ListarVagasDTO> findVagasByEmpresa(Empresa empresa) {
         try {
-            TypedQuery<Vaga> query = entityManager.createQuery(
-                    "SELECT v FROM Vaga v WHERE v.empresa = :empresa", Vaga.class
+            TypedQuery<ListarVagasDTO> query = entityManager.createQuery(
+                    "SELECT new ListarVagasDTO(v.idVaga, v.nome) FROM Vaga v WHERE v.empresa = :empresa", ListarVagasDTO.class
             );
             query.setParameter("empresa", empresa);
             return query.getResultList();
@@ -65,7 +66,7 @@ public class VagaDAO {
         }
     }
 
-    public String updateVaga(int idVaga, Empresa empresa, String nome, String descricao, String estado, float faixaSalarial) {
+    public String updateVaga(int idVaga, Empresa empresa, String nome, String descricao, String estado, float faixaSalarial, String competencias) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -80,6 +81,7 @@ public class VagaDAO {
                 vaga.setDescricao(descricao);
                 vaga.setEstado(estado);
                 vaga.setFaixaSalarial(faixaSalarial);
+                vaga.setCompetencias(competencias);
                 entityManager.merge(empresa);
                 transaction.commit();
                 return "OK";

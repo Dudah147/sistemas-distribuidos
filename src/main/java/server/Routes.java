@@ -80,13 +80,14 @@ public class Routes {
                     this.vagaController.cadastrar(requestJSON);
                 case "visualizarVaga" ->
                     this.vagaController.visualizar(requestJSON);
-                case "alterarVaga" ->
+                case "atualizarVaga" ->
                     this.vagaController.atualizar(requestJSON);
                 case "apagarVaga" ->
                     this.vagaController.apagar(requestJSON);
                 case "listarVagas" ->
                     this.vagaController.listarVagas(requestJSON);
-
+                case "filtrarVagas" ->
+                    this.vagaController.filtrarVagas(requestJSON);
                 default ->
                     "OPERACAO '" + requestJSON.getString("operacao") + "' NÃO ENCONTRADA";
             };
