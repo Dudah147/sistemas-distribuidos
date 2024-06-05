@@ -381,15 +381,15 @@ public class VagaController {
         }
 
         try {
-            String where = "WHERE 1=1 ";
+            String where = "";
 
             JSONArray competencias = filtros.getJSONArray("competencias");
+            
             for (int i = 0; i < competencias.length(); i++) {
                 String comp = competencias.getString(i);
                 where = where + tipo +" v.competencias LIKE \"%" + comp + "%\" ";
             }
-            
-            List<Vaga> resp = this.vagaDAO.filtrarVagasCandidato(where);
+            List<Vaga> resp = this.vagaDAO.filtrarVagasCandidato("WHERE "+ where.substring(3));
             if (resp == null) {
                 responseJson.put("operacao", "filtrarVagas");
                 responseJson.put("status", 201);
@@ -404,7 +404,7 @@ public class VagaController {
                 newObj.put("idVaga", vaga.getIdVaga());
                 newObj.put("nome", vaga.getNome());
                 newObj.put("email", vaga.getEmpresa().getEmail());
-                newObj.put("competencias", vaga.getCompetencias());
+                newObj.put("competencias", Formater.convertStringToJSONArray(vaga.getCompetencias()));
                 newObj.put("faixaSalarial", vaga.getFaixaSalarial());
                 newObj.put("descricao", vaga.getDescricao());
                 

@@ -50,6 +50,7 @@ public class HomeCandidato extends javax.swing.JFrame {
         bttnLogout = new javax.swing.JToggleButton();
         bttnApagar = new javax.swing.JToggleButton();
         btnCompetencias = new javax.swing.JToggleButton();
+        btnVagas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(null);
@@ -155,6 +156,13 @@ public class HomeCandidato extends javax.swing.JFrame {
             }
         });
 
+        btnVagas.setText("Vagas");
+        btnVagas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVagasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,7 +179,8 @@ public class HomeCandidato extends javax.swing.JFrame {
                     .addComponent(bttnAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bttnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bttnApagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCompetencias, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnCompetencias, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVagas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
@@ -185,6 +194,8 @@ public class HomeCandidato extends javax.swing.JFrame {
                         .addComponent(bttnAtualizar)
                         .addGap(18, 18, 18)
                         .addComponent(btnCompetencias)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnVagas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bttnLogout)
                         .addGap(18, 18, 18)
@@ -272,6 +283,11 @@ public class HomeCandidato extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCompetenciasActionPerformed
 
+    private void btnVagasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVagasActionPerformed
+        new Vaga(clientApp, usuario, email, token).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVagasActionPerformed
+
     private void visualizarUsusario(String usuario, String email) {
         JSONObject request = new JSONObject();
 
@@ -293,6 +309,7 @@ public class HomeCandidato extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCompetencias;
+    private javax.swing.JButton btnVagas;
     private javax.swing.JToggleButton bttnApagar;
     private javax.swing.JToggleButton bttnAtualizar;
     private javax.swing.JToggleButton bttnLogout;

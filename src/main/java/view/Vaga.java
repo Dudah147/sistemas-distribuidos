@@ -40,8 +40,14 @@ public class Vaga extends javax.swing.JFrame {
             this.btnAlterar.setVisible(false);
             this.btnApagar.setVisible(false);
             this.btnCadastrar.setVisible(false);
+//            JSONObject filtros = new JSONObject();
+//            JSONArray competencias = new JSONArray();
+//            competencias.put("C#");
+//            competencias.put("Python");
+//            filtros.put("competencias", competencias);
+//            filtros.put("tipo","OR");
+//            this.visualizarVagasCadidato(filtros);
         }
-
     }
 
     /**
@@ -99,6 +105,11 @@ public class Vaga extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblVagas);
 
         btnFiltrar.setText("Filtrar");
+        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarActionPerformed(evt);
+            }
+        });
 
         btnVoltar.setText("Voltar");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
@@ -242,7 +253,7 @@ public class Vaga extends javax.swing.JFrame {
         request.put("email", this.email);
         request.put("token", this.token);
         request.put("idVaga", tblModel.getValueAt(row, 0));
-        
+
         String response = this.clientApp.callServer(request);
         if (response == null) {
             JOptionPane.showMessageDialog(Vaga.this, "Resposta não recebida", "Erro ao alterar vaga", JOptionPane.ERROR_MESSAGE);
@@ -258,6 +269,54 @@ public class Vaga extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(Vaga.this, responseJSON.getString("mensagem"), "Erro alterar vaga", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnApagarActionPerformed
+
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        new FiltrarVaga(this).setVisible(true);
+    }//GEN-LAST:event_btnFiltrarActionPerformed
+
+    public void visualizarVagasCadidato(JSONObject filtros) {
+
+        JSONObject request = new JSONObject();
+        request.put("operacao", "filtrarVagas");
+        request.put("email", this.email);
+        request.put("token", this.token);
+        request.put("filtros", filtros);
+
+        String response = this.clientApp.callServer(request);
+        if (response == null) {
+            JOptionPane.showMessageDialog(Vaga.this, "Resposta não recebida", "Erro ao Filtrar Vagas", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JSONObject responseJSON = new JSONObject(response);
+
+        if (responseJSON.getInt("status") == 201) {
+            DefaultTableModel tblModel = (DefaultTableModel) this.tblVagas.getModel();
+            tblModel.setRowCount(0);
+            JSONArray vagas = responseJSON.getJSONArray("vagas");
+            for (Object vagaObj : vagas) {
+                try {
+                    JSONObject vaga = new JSONObject(vagaObj.toString());
+                    System.out.println(vaga);
+                    tblModel.addRow(new Object[]{
+                        vaga.getInt("idVaga"),
+                        vaga.getString("nome"),
+                        this.email,
+                        vaga.getFloat("faixaSalarial"),
+                        vaga.getString("descricao"),
+                        vaga.getString("estado"),
+                        Formater.convertJSONArrayToString(vaga.getJSONArray("competencias"))
+                    });
+
+                } catch (Exception ex) {
+                    
+                    JOptionPane.showMessageDialog(Vaga.this, ex.getMessage(), "Erro Filtrar Vaga", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(Vaga.this, responseJSON.getString("mensagem"), "Erro Filtrar Vagas", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     public void visualizarVagasEmpresa() {
         JSONObject request = new JSONObject();

@@ -66,7 +66,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel5.setText("E-mail");
 
-        inpEmail.setText("empresa@email.com");
+        inpEmail.setText("duda@email.com");
         inpEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inpEmailActionPerformed(evt);
