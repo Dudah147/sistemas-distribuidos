@@ -51,7 +51,6 @@ public class VagaDAO {
     }
     
     public List<Vaga> filtrarVagasCandidato(String where){
-        System.out.println(where);
         try {
             TypedQuery<Vaga> query = entityManager.createQuery(
                     "SELECT v FROM Vaga v " + where, Vaga.class

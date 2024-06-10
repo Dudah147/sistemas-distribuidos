@@ -27,10 +27,8 @@ public class Formater {
     public static JSONArray convertStringToJSONArray(String input) {
         JSONArray jsonArray = new JSONArray();
 
-        // Dividir a string por ", "
         String[] items = input.split(", ");
 
-        // Adicionar cada item ao JSONArray
         for (String item : items) {
             jsonArray.put(item);
         }
